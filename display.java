@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Frame;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,15 +17,15 @@ import java.awt.event.ActionEvent;
  * Starting GUI for game catalog
  * 
  */
-public class display extends JPanel {
+public class Display extends JFrame {
     
-    private JPanel contentpane;
+    private JPanel contentPane;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    display frame = new display();
+                    Display frame = new Display();
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -33,8 +34,18 @@ public class display extends JPanel {
         });
     }
     
-    public display() {
-        setTitle("GameCheck"); // unworking
+    public Display() {
+        setTitle("GameCheck");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 600, 525);
+        contentPane = new JPanel();
+        contentPane.setForeground(new Color(255, 182, 193));
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        contentPane.setLayout(new BorderLayout(0, 0));
+        setContentPane(contentPane);
+        
+        JLabel sample = new JLabel("GameCheck");
+        contentPane.add(sample, BorderLayout.NORTH);
         
         
     }
