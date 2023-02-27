@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Frame;
 
 import javax.swing.JFrame;
@@ -45,6 +46,8 @@ public class Display extends JFrame {
         setContentPane(contentPane);
         
         JLabel sample = new JLabel("GameCheck");
+        sample.setForeground(Color.RED);
+        sample.setFont(new Font("Helvetica", Font.PLAIN, 24));
         contentPane.add(sample, BorderLayout.NORTH);
         
         
