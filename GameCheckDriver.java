@@ -1,9 +1,83 @@
 import java.util.*;
 
+/**
+ * Driver class for GameCheck
+ * @author djax1, JackDina
+ *
+ */
+
 public class GameCheckDriver {
 	
 	ArrayList<Game> gameArray = new ArrayList<Game>();
 	public static void main(String[] args) {
+		ArrayList<Game> gameData = fillData("steamdb2.1.txt");
+		System.out.println(gameData.size());
+		System.out.println(gameData.get(0).getName() + " " + gameData.get(0).getRating());
+		ArrayList<String> genreTest = convertGenres(gameData.get(0).getGenres());
+		
+		for (int i = 0; i < genreTest.size(); i++) {
+			System.out.println(genreTest.get(i));
+		}
+	}
+	
+	/**
+	 * Reads data from file one line at a time to add game objects to an arrayList
+	 * @param fileName string file name containing the data, meant to read from a 3
+	 * column format
+	 * @return an arrayList containing all games listed in the file.
+	 * @throws FileNotFoundException
+	 */
+	public static ArrayList<Game> fillData(String fileName) throws FileNotFoundException {
+		ArrayList<Game> gameData = new ArrayList();
+		File rawData = new File(fileName);
+		Scanner fileReader = new Scanner(rawData);
+		fileReader.nextLine();
+		while (fileReader.hasNextLine()) {
+			String line = fileReader.nextLine();
+			String[] separatedLine = new String[3];
+			separatedLine = line.split("\t");
+			Set<Integer> genres = genreReader(separatedLine[2]);
+			Set<Integer> platforms = new HashSet<Integer>();
+			int rating = Integer.parseInt(separatedLine[1]);
+			gameData.add(new Game(separatedLine[0], 0.0f, "", genres, platforms, rating));
+		}
+		return gameData;
+	}
+	
+	/**
+	 * Converts the text string of 1s and 0s to an int code for the genres
+	 * @param binaryCode string of 1s and 0s, representing a game's genre
+	 * @return Int set that represent the genres that correspond to a game
+	 */
+	public static Set<Integer> genreReader(String binaryCode) {
+		Set<Integer> genres = new HashSet<Integer>();
+		for (int i = 0; i < 26; i++) {
+			if (binaryCode.substring(i, i + 1).equals("1")) {
+				genres.add(i);
+			}
+		}
+		return genres;
+	}
+	
+	/**
+	 * This list converts the int code for genres into their respective genre strings
+	 * @param valCode Set of integers representing genres in the list
+	 * @return an arrayList of genre strings
+	 */
+	public static ArrayList<String> convertGenres(Set<Integer> valCode) {
+		// Empty list to be filed with valid genres
+		ArrayList<String> genreList = new ArrayList<String>();
+		// Reference list containing all genres in order according to their code
+		ArrayList<String> genres = new ArrayList<String>(Arrays.asList("Indie", "Profile Features Limited", "Action",
+				"Casual", "Singleplayer", "Adventure", "Simulation", "Strategy", "RPG", "2D", "Atmospheric", "3D",
+				"Puzzle", "Pixel Graphics", "Fantasy", "Story Rich", "Colorful", "Exploration", "Free to Play", "Cute",
+				"Multiplayer", "Early Access", "First-Person", "Arcade", "Anime", "Shooter"));
+		for (int i = 0; i < 26; i++) {
+			if (valCode.contains(i)) {
+				genreList.add(genres.get(i));
+			}
+		}
+		return genreList;
 	}
 	
 	// Search algorithm for name.
