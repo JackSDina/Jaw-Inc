@@ -10,7 +10,7 @@ import java.io.*;
 public class GameCheckDriver {
 	
 	ArrayList<Game> gameArray = new ArrayList<Game>();
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		ArrayList<Game> gameData = fillData("steamdb2.1.txt");
 		System.out.println(gameData.size());
 		System.out.println(gameData.get(0).getName() + " " + gameData.get(0).getRating());
