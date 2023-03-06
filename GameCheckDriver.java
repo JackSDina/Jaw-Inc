@@ -81,7 +81,11 @@ public class GameCheckDriver {
 		return genreList;
 	}
 	
-	// Search algorithm for name.
+	/**
+	 * Search algorithm for finding games based on name
+	 * @param name String representation of user's input
+	 * @return an arrayList of Games
+	 */
 	void searchName (String name) {
 		ArrayList<Game> newArray = new ArrayList<Game>();
 		
@@ -95,6 +99,11 @@ public class GameCheckDriver {
 		}
 	}
 	
+	/**
+	 * Search algorithm for finding games based on publishers
+	 * @param publisher String representation of user's input
+	 * @return an arrayList of Games
+	 */
 	void searchPublisher (String publisher) {
 		ArrayList<Game> newArray = new ArrayList<Game>();
 		
@@ -108,6 +117,11 @@ public class GameCheckDriver {
 		}
 	}
 	
+	/**
+	 * Search algorithm for finding games based on genre
+	 * @param genre String representation of user's input
+	 * @return an arrayList of Games
+	 */
 	void searchGenre (int genre) {
 		ArrayList<Game> newArray = new ArrayList<Game>();
 		
@@ -120,7 +134,12 @@ public class GameCheckDriver {
 			System.out.println(newArray.get(i).toString());
 		}
 	}
-	
+
+	/**
+	 * Search algorithm for finding games based on platforms
+	 * @param platforms String representation of user's input
+	 * @return an arrayList of Games
+	 */
 	void searchPlatforms (int platforms) {
 		ArrayList<Game> newArray = new ArrayList<Game>();
 		
@@ -168,3 +187,8 @@ public class GameCheckDriver {
 				-> o1.getName().compareTo(o2.getName()));
 	}
 }
+
+	/**
+	 * William
+	 * for later: check genre and platform params
+	 */
