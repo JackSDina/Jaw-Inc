@@ -3,7 +3,7 @@ import java.io.*;
 
 /**
  * Driver class for GameCheck
- * @author djax1, JackDina
+ * @author djax1, dinajs
  *
  */
 
