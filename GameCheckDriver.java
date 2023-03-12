@@ -1,4 +1,5 @@
 import java.util.*;
+import java.awt.EventQueue;
 import java.io.*;
 
 /**
@@ -19,6 +20,17 @@ public class GameCheckDriver {
 		for (int i = 0; i < genreTest.size(); i++) {
 			System.out.println(genreTest.get(i));
 		}
+		
+	EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    Display frame = new Display(gameData);
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 	}
 	
 	/**
@@ -187,4 +199,3 @@ public class GameCheckDriver {
 				-> o1.getName().compareTo(o2.getName()));
 	}
 }
-
