@@ -20,7 +20,8 @@ public class GameCheckDriver {
 		for (int i = 0; i < genreTest.size(); i++) {
 			System.out.println(genreTest.get(i));
 		}
-		
+	
+	// Run GUI
 	EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
