@@ -31,6 +31,14 @@ public class Game {
         platforms = pl;
         rating = r;
     }
+	
+    public Game(Game game) {
+    	this.name = game.name;
+    	this.price = game.price;
+    	this.genres = game.genres;
+    	this.platforms = game.platforms;
+    	this.rating = game.rating;
+    }
 
    // this method is used for the to string method
    public static ArrayList<String> convertGenres(Set<Integer> valCode) {
