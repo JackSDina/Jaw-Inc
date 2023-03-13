@@ -1,10 +1,9 @@
 import java.util.*;
-import java.awt.EventQueue;
 import java.io.*;
 
 /**
  * Driver class for GameCheck
- * @author jacks338, dinajs
+ * @author djax1, dinajs
  *
  */
 
@@ -20,18 +19,6 @@ public class GameCheckDriver {
 		for (int i = 0; i < genreTest.size(); i++) {
 			System.out.println(genreTest.get(i));
 		}
-	
-	// Run GUI
-	EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    Display frame = new Display(gameData);
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
 	}
 	
 	/**
@@ -168,30 +155,50 @@ public class GameCheckDriver {
 	
 	void sortRating() {
 		//TODO Maybe
-        for (int i = 1; i < gameArray.size(); ++i) {
-            int key = gameArray.get(i).getRating();
-            int j = i - 1;
-
-            while (j >= 0 && gameArray.get(j).getRating() > key) {
-            	gameArray.set(j+1, gameArray.get(j));
-                j = j - 1;
-            }
-            gameArray.get(j+1).setRating(key);
-        }
+//        for (int i = 1; i < gameArray.size(); ++i) {
+//            int key = gameArray.get(i).getRating();
+//            int j = i - 1;
+//
+//            while (j >= 0 && gameArray.get(j).getRating() > key) {
+//            	gameArray.set(j+1, gameArray.get(j));
+//                j = j - 1;
+//            }
+//            gameArray.get(j+1).setRating(key);
+//        }
+		// Heapify function is called for the items in
+		// the array.
+		for (int i = gameArray.size()/2 - 1; i >= 0; --i) {
+			heapify(gameArray, gameArray.size(), i, 1);
+		}
+		
+		// Swaps each item in the array.
+		for (int i = gameArray.size()-1; i > 0; --i) {
+			swap(gameArray, i, 0);
+			heapify(gameArray, i, 0, 1);
+		}
 	}
 	
 	void sortPrice () {
 		//TODO Maybe
-		for (int i = 1; i < gameArray.size(); ++i) {
-            float key = gameArray.get(i).getPrice();
-            int j = i - 1;
- 
-            while (j >= 0 && gameArray.get(j).getPrice() > key) {
-            	gameArray.set(j+1, gameArray.get(j));
-                j = j - 1;
-            }
-            gameArray.get(j+1).setPrice(key);
-        }
+//		for (int i = 1; i < gameArray.size(); ++i) {
+//            float key = gameArray.get(i).getPrice();
+//            int j = i - 1;
+// 
+//            while (j >= 0 && gameArray.get(j).getPrice() > key) {
+//            	gameArray.set(j+1, gameArray.get(j));
+//                j = j - 1;
+//            }
+//            gameArray.get(j+1).setPrice(key);
+//        }
+		for (int i = gameArray.size()/2 - 1; i >= 0; --i) {
+			heapify(gameArray, gameArray.size(), i, 2);
+		}
+		
+		// Swaps each item in the array.
+		for (int i = gameArray.size()-1; i > 0; --i) {
+			swap(gameArray, i, 0);
+			heapify(gameArray, i, 0, 2);
+		}
 
 	}
 	
@@ -199,4 +206,60 @@ public class GameCheckDriver {
 		gameArray.sort((o1, o2)
 				-> o1.getName().compareTo(o2.getName()));
 	}
+	
+	void swap (ArrayList<Game> gameArray, int next, int previous) {
+		Game temp = new Game(gameArray.get(previous));
+		gameArray.set(previous, gameArray.get(next));
+		gameArray.set(next, temp);
+	}
+	
+	void heapify (ArrayList<Game> gameArray, int size, int i, int sortType) {
+		// Initializing variables needed for
+		// tree creation.
+		int root = i;
+		int right = 2*i+2;
+		int left = 2*i+1;
+		
+		if (sortType == 1) {
+			// Checks to see if the left or right
+			// is larger then the root.
+			if ((right < size) && (gameArray.get(right).getRating() > gameArray.get(root).getRating())) {
+				root = right;
+			}
+			if ((left < size) && (gameArray.get(left).getRating() > gameArray.get(root).getRating())) {
+				root = left;
+			}
+			
+			// Checks to make sure the largest is root.
+			if (root != i) {
+				swap(gameArray, root, i);
+				
+				// Heapifies the subtrees.
+				heapify(gameArray, size, root, sortType);
+			}
+		} else if (sortType == 2) {
+			// Checks to see if the left or right
+			// is larger then the root.
+			if ((right < size) && (gameArray.get(right).getPrice() > gameArray.get(root).getPrice())) {
+				root = right;
+			}
+			if ((left < size) && (gameArray.get(left).getPrice() > gameArray.get(root).getPrice())) {
+				root = left;
+			}
+			
+			// Checks to make sure the largest is root.
+			if (root != i) {
+				swap(gameArray, root, i);
+				
+				// Heapifies the subtrees.
+				heapify(gameArray, size, root, sortType);
+			}
+		}
+		
+	}
 }
+
+	/**
+	 * William
+	 * for later: check genre and platform params
+	 */
