@@ -104,6 +104,8 @@ public class GameCheckDriver {
 		for (int i = 0; i < gameArray.size(); ++i) {
 			if (gameArray.get(i).getName().equalsIgnoreCase(name)) {
 				newArray.add(gameArray.get(i));
+			} else if(gameArray.get(i).getName().contains(name)) {
+				newArray.add(gameArray.get(i));	
 			}
 		}
 		for(int i = 0; i < newArray.size(); ++i) {
