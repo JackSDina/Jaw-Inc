@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,10 +15,11 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Starting GUI for game catalog
+ * GUI for game catalog
  * 
  * @author Jack McMaken
  * 
@@ -30,14 +32,13 @@ public class Display extends JFrame {
     private JPanel submitQuestionsPanel;
     private JPanel searchResultPanel;
 
-
     /**
      * Generates JFrame with all necessary components
      * 
      * @param The array of games
      */
     @SuppressWarnings("resource")
-    public Display(ArrayList<Game> games) {      // Suggestion: take array of Game objects as arg and get game instances variables to display info
+    public Display(ArrayList<Game> games) {
         this.games = games;
 
         // Content pane setup
@@ -64,110 +65,100 @@ public class Display extends JFrame {
         submitQuestionsPanel = new JPanel();
         submitQuestionsPanel.setPreferredSize(new Dimension(50, 50));
         submitQuestionsPanel.setBackground(new Color(196, 165, 165));
+        
         JLabel searchQuestion = new JLabel("What game would you like to search for?");
+        searchQuestion.setFont(new Font("Helvetica", Font.BOLD, 12));
         JTextField search = new JTextField(35);
         JButton submitQuestion = new JButton("Search");
+        JButton submitGenre = new JButton("Search genre");
         JButton sortRating = new JButton("Sort all by rating");
         JButton sortName = new JButton("Sort all by name");
-        //submitQuestion.setFocusPainted(false);
+        
+        // Enables use of enter key to press submit button
         getRootPane().setDefaultButton(submitQuestion);
 
-
-
+        // Add actionlisteners to buttons
         submitQuestion.addActionListener(e -> showResults(search.getText()));
+        submitGenre.addActionListener(e -> displayGenreSearch(search.getText()));
         sortRating.addActionListener(e -> displayRatingSort());
         sortName.addActionListener(e -> displayNameSort());
 
         submitQuestionsPanel.add(searchQuestion, BorderLayout.CENTER);
         submitQuestionsPanel.add(search, BorderLayout.AFTER_LAST_LINE);
         submitQuestionsPanel.add(submitQuestion);
+        submitQuestionsPanel.add(submitGenre);
         submitQuestionsPanel.add(sortName);
         submitQuestionsPanel.add(sortRating);
         contentPane.add(submitQuestionsPanel);
+        
+        // Prepare search result panel
         searchResultPanel = new JPanel();
         contentPane.add(searchResultPanel, BorderLayout.AFTER_LAST_LINE);
-
-
-
-        // Use steamdb file to display games   (temp function) 
-        //        String all = null;
-        //        try {
-        //            all = new Scanner(new File("steamdb2.1.txt")).useDelimiter("\\A").next();
-        //        } catch (FileNotFoundException e) {
-        //            e.printStackTrace();
-        //        }
-        //        JTextArea textArea = new JTextArea(10, 20);
-        //        JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        //        textArea.setText(all);
-        //        textArea.setLineWrap(true);
-        //        textArea.setWrapStyleWord(true);
-        //        textArea.setCaretPosition(0);
-        //        contentPane.add(scroll);
 
 
     }
 
     /*
-     * Generates results after submit button pressed
+     * Generates and displays search results
      */
     private void showResults(String s) {
         input = s;
 
-        //        searchResultPanel.revalidate();
-        //        searchResultPanel.repaint();
         searchResultPanel.removeAll();
         searchResultPanel.revalidate();
         searchResultPanel.repaint();
 
-
-        // Setup and show panel for search results
+        // Search for game
         Game selectedGame = null;
         for (Game g : games) {
-            if (g.getName().toLowerCase().equals(input.toLowerCase())) {
+            if (g.getName().toLowerCase().equalsIgnoreCase(input)) {
                 selectedGame = g;
                 break;
             }
         }
-
-        JLabel displayGame = new JLabel();  
+        
+        // Set text based on result of search
+        JTextArea displayGame = new JTextArea(10, 40);
         if (!input.equals("")) {
             if (selectedGame != null) {
-                ArrayList<String> genres = GameCheckDriver.convertGenres(selectedGame.getGenres());
-                displayGame = new JLabel(selectedGame.getName() + "     " + selectedGame.getRating() + "%     " + genres.toString());
+                displayGame.setText(selectedGame.toString());
             } else {
-                displayGame = new JLabel("Your search couldn't be found.");
+                displayGame.setText("Your search couldn't be found.");
             }
         } else {
-            displayGame = new JLabel("Please enter a search.");
+            displayGame.setText("Please enter a search.");
         }
-        displayGame.setFont(new Font("Helvetica", Font.PLAIN, 12));
-
-        searchResultPanel.add(displayGame);
+        
+        displayGame.setFont(new Font("Helvetica", Font.PLAIN, 14));
+        displayGame.setEditable(false);
+        displayGame.setLineWrap(true);
+        displayGame.setWrapStyleWord(true);
+        
+        searchResultPanel.add(new JScrollPane(displayGame), BorderLayout.NORTH);
         searchResultPanel.revalidate();
         searchResultPanel.repaint();
 
-
-
         System.out.println(input);            
     }
-
+    
+    /*
+     * Sorts and displays games by rating
+     */
     private void displayRatingSort() {
         searchResultPanel.removeAll();
         searchResultPanel.revalidate();
         searchResultPanel.repaint();
         
-        JTextArea textArea = new JTextArea(10, 40);
-        textArea.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
+        JTextArea textArea = new JTextArea(15, 40);
+        textArea.setFont(new Font("Helvetica", Font.PLAIN, 14));
         JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//        String listString = gameCheckDriver.gameArray.stream().map(Object::toString)
-//                .collect(Collectors.joining(", "));
         ArrayList<Game> sorted = GameCheckDriver.sortRating(games);
-        String all = "";
+        
         for (int i = 0; i < sorted.size(); i++) {
-            all += sorted.get(i).toString() +"\n";
+            textArea.append(i + 1 + ". " + sorted.get(i).toString() +"\n");
         }
         
-        textArea.setText(all);
+        textArea.setEditable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setCaretPosition(0);
@@ -178,23 +169,24 @@ public class Display extends JFrame {
 
     }
     
+    /*
+     * Sorts and displays games by name
+     */
     private void displayNameSort() {
         searchResultPanel.removeAll();
         searchResultPanel.revalidate();
         searchResultPanel.repaint();
         
-        JTextArea textArea = new JTextArea(10, 40);
-        JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//        String listString = gameCheckDriver.gameArray.stream().map(Object::toString)
-//                .collect(Collectors.joining(", "));
-        textArea.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
+        JTextArea textArea = new JTextArea(15, 40);
+        textArea.setFont(new Font("Helvetica", Font.PLAIN, 14));
+        JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);    
         ArrayList<Game> sorted = GameCheckDriver.sortName(games);
-        String all = "";
+
         for (int i = 0; i < sorted.size(); i++) {
-            all += sorted.get(i).toString() +"\n";
+            textArea.append(i + 1 + ". " + sorted.get(i).toString() +"\n");
         }
         
-        textArea.setText(all);
+        textArea.setEditable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setCaretPosition(0);
@@ -204,6 +196,60 @@ public class Display extends JFrame {
         searchResultPanel.repaint();
 
     }
+    
+    /*
+     * Generates and displays results of genre search
+     */
+    private void displayGenreSearch(String genre) {
+        searchResultPanel.removeAll();
+        searchResultPanel.revalidate();
+        searchResultPanel.repaint();
+        
+        JTextArea textArea = new JTextArea(15, 40);
+        textArea.setFont(new Font("Helvetica", Font.PLAIN, 14));
+        JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
+        
+        boolean appended = false;
+        if (genre.isEmpty()) {
+            textArea.setText("You didn't enter anything.");
+        } else {
+            for (int i = 0; i < games.size(); i++) {
+                ArrayList<String> genres = GameCheckDriver.convertGenres(games.get(i).getGenres());
+                List<String> lower = genres.stream().map(String::toLowerCase).collect(Collectors.toList());
+                if (lower.contains(genre.toLowerCase())) {
+                    textArea.append(games.get(i).toString() +"\n");
+                    appended = true;
+                }
+            }
+        }
+        if (!appended && !genre.isEmpty()) {
+            textArea.setText("Genre not found.");
+        }
+        
+        textArea.setEditable(false);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setCaretPosition(0);
+        
+        searchResultPanel.add(scroll);
+        searchResultPanel.revalidate();
+        searchResultPanel.repaint();
+    }
+    
+ // Use steamdb file to display games   (temp function) 
+    //        String all = null;
+    //        try {
+    //            all = new Scanner(new File("steamdb2.1.txt")).useDelimiter("\\A").next();
+    //        } catch (FileNotFoundException e) {
+    //            e.printStackTrace();
+    //        }
+    //        JTextArea textArea = new JTextArea(10, 20);
+    //        JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    //        textArea.setText(all);
+    //        textArea.setLineWrap(true);
+    //        textArea.setWrapStyleWord(true);
+    //        textArea.setCaretPosition(0);
+    //        contentPane.add(scroll);
 
 
 }
