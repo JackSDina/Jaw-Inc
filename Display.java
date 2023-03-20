@@ -44,8 +44,8 @@ public class Display extends JFrame {
         // Content pane setup
         setTitle("GameCheck");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 700, 500);
-        setResizable(false);
+        setBounds(100, 100, 800, 500);
+        //setResizable(false);
         contentPane = new JPanel();
         contentPane.setDoubleBuffered(true);
         contentPane.setForeground(new Color(255, 182, 193));
@@ -56,7 +56,7 @@ public class Display extends JFrame {
 
         // Print title
         JLabel title = new JLabel("GameCheck");
-        title.setForeground(Color.RED);
+        title.setForeground(new Color(148, 19, 19));
         title.setFont(new Font("Helvetica", Font.PLAIN, 24));
         contentPane.add(title, BorderLayout.NORTH);
 
@@ -109,19 +109,15 @@ public class Display extends JFrame {
         searchResultPanel.repaint();
 
         // Search for game
-        Game selectedGame = null;
-        for (Game g : games) {
-            if (g.getName().toLowerCase().equalsIgnoreCase(input)) {
-                selectedGame = g;
-                break;
-            }
-        }
+        ArrayList<Game> selectedGames = GameCheckDriver.searchName(games, input);
         
         // Set text based on result of search
         JTextArea displayGame = new JTextArea(10, 40);
-        if (!input.equals("")) {
-            if (selectedGame != null) {
-                displayGame.setText(selectedGame.toString());
+        if (!input.isEmpty()) {
+            if (!selectedGames.isEmpty()) {
+                for (Game g : selectedGames) {
+                    displayGame.append(g.toString() + "\n");
+                }
             } else {
                 displayGame.setText("Your search couldn't be found.");
             }
@@ -133,8 +129,9 @@ public class Display extends JFrame {
         displayGame.setEditable(false);
         displayGame.setLineWrap(true);
         displayGame.setWrapStyleWord(true);
+        displayGame.setCaretPosition(0);
         
-        searchResultPanel.add(new JScrollPane(displayGame), BorderLayout.NORTH);
+        searchResultPanel.add(new JScrollPane(displayGame, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.NORTH);
         searchResultPanel.revalidate();
         searchResultPanel.repaint();
 
