@@ -94,24 +94,26 @@ public class GameCheckDriver {
 	}
 	
 	/**
-	 * Search algorithm for finding games based on name
-	 * @param name String representation of user's input
-	 * @return an arrayList of Games
-	 */
-	void searchName (String name) {
-		ArrayList<Game> newArray = new ArrayList<Game>();
-		
-		for (int i = 0; i < gameArray.size(); ++i) {
-			if (gameArray.get(i).getName().equalsIgnoreCase(name)) {
-				newArray.add(gameArray.get(i));
-			} else if(gameArray.get(i).getName().contains(name)) {
-				newArray.add(gameArray.get(i));	
-			}
-		}
-		for(int i = 0; i < newArray.size(); ++i) {
-			System.out.println(newArray.get(i).toString());
-		}
-	}
+     * Search algorithm for finding games based on name
+     * @param name String representation of user's input
+     * @return an arrayList of Games
+     */
+    static ArrayList<Game> searchName (ArrayList<Game> g, String name) {
+        ArrayList<Game> newArray = new ArrayList<Game>();
+        name = name.toLowerCase();
+        for (int i = 0; i < g.size(); ++i) {
+            if (g.get(i).getName().equalsIgnoreCase(name)) {
+                newArray.add(g.get(i));
+            } else if(g.get(i).getName().toLowerCase().contains(name)) {
+                newArray.add(g.get(i)); 
+            }
+        }
+        
+        for(int i = 0; i < newArray.size(); ++i) {
+            System.out.println(newArray.get(i).toString());
+        }
+        return newArray;
+    }
 	
 	/**
 	 * Search algorithm for finding games based on publishers
