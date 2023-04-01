@@ -93,8 +93,40 @@ public class GameCheckDriver {
 		return genreList;
 	}
 	
-	void totalSearch(ArrayList<Integer> list) {
+	/**
+	* Searches based off of multiple criteria.
+	* @param list ArrayList<Integer> list containing numbers corresponding to actions.
+	* @param info ArrayList<Object> list continaing extra info that the sub functions may need.
+	*/
+	void totalSearch(ArrayList<Integer> list, ArrayList<Object> info) {
+		ArrayList<Game> publisherInfo = new ArrayList<Game>();
+		ArrayList<Game> genreInfo = new ArrayList<Game>();
+		ArrayList<Game> platformInfo = new ArrayList<Game>();
 		//TODO by Dina
+		if (list.contains(1)) {
+			//search publisher
+			publisherInfo = searchPublisher((String)info.get(0));
+		}
+		if (list.contains(2)) {
+			//search genre	
+			genreInfo  = searchGenre((int)info.get(1));
+		}
+		if (list.contains(3)) {
+			//search platforms
+			platformInfo = searchPlatforms((int)info.get(2));
+		}
+		
+		Set<Game> finalList = new HashSet<Game> ();
+		finalList.addAll(publisherInfo);
+		finalList.addAll(genreInfo);
+		finalList.addAll(platformInfo);
+		
+		Iterator<Game> finalListIterator = finalList.iterator();
+		
+		while(finalListIterator.hasNext()) {
+			System.out.println(finalListIterator.next().toString());
+		}
+		
 	}
 	
 	/**
@@ -124,7 +156,7 @@ public class GameCheckDriver {
 	 * @param publisher String representation of user's input
 	 * @return an arrayList of Games
 	 */
-	void searchPublisher (String publisher) {
+	ArrayList<Game> searchPublisher (String publisher) {
 		ArrayList<Game> newArray = new ArrayList<Game>();
 		
 		for (int i = 0; i < gameArray.size(); ++i) {
@@ -132,9 +164,10 @@ public class GameCheckDriver {
 				newArray.add(gameArray.get(i));
 			}
 		}
-		for(int i = 0; i < newArray.size(); ++i) {
-			System.out.println(newArray.get(i).toString());
-		}
+		//for(int i = 0; i < newArray.size(); ++i) {
+		//	System.out.println(newArray.get(i).toString());
+		//}
+		return newArray;
 	}
 	
 	/**
@@ -142,7 +175,7 @@ public class GameCheckDriver {
 	 * @param genre String representation of user's input
 	 * @return an arrayList of Games
 	 */
-	void searchGenre (int genre) {
+	ArrayList<Game> searchGenre (int genre) {
 		ArrayList<Game> newArray = new ArrayList<Game>();
 		
 		for (int i = 0; i < gameArray.size(); ++i) {
@@ -150,9 +183,10 @@ public class GameCheckDriver {
 				newArray.add(gameArray.get(i));
 			}
 		}
-		for(int i = 0; i < newArray.size(); ++i) {
-			System.out.println(newArray.get(i).toString());
-		}
+		//for(int i = 0; i < newArray.size(); ++i) {
+		//	System.out.println(newArray.get(i).toString());
+		//}
+		return newArray;
 	}
 
 	/**
@@ -160,7 +194,7 @@ public class GameCheckDriver {
 	 * @param platforms String representation of user's input
 	 * @return an arrayList of Games
 	 */
-	void searchPlatforms (int platforms) {
+	ArrayList<Game> searchPlatforms (int platforms) {
 		ArrayList<Game> newArray = new ArrayList<Game>();
 		
 		for (int i = 0; i < gameArray.size(); ++i) {
@@ -168,9 +202,10 @@ public class GameCheckDriver {
 				newArray.add(gameArray.get(i));
 			}
 		}
-		for(int i = 0; i < newArray.size(); ++i) {
-			System.out.println(newArray.get(i).toString());
-		}
+		//for(int i = 0; i < newArray.size(); ++i) {
+		//	System.out.println(newArray.get(i).toString());
+		//}
+		return newArray;
 	}
 	
 	void sortRating() {
