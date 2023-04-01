@@ -93,27 +93,31 @@ public class GameCheckDriver {
 		return genreList;
 	}
 	
+	void totalSearch(ArrayList<Integer> list) {
+		//TODO by Dina
+	}
+	
 	/**
-     * Search algorithm for finding games based on name
-     * @param name String representation of user's input
-     * @return an arrayList of Games
-     */
-    static ArrayList<Game> searchName (ArrayList<Game> g, String name) {
-        ArrayList<Game> newArray = new ArrayList<Game>();
-        name = name.toLowerCase();
-        for (int i = 0; i < g.size(); ++i) {
-            if (g.get(i).getName().equalsIgnoreCase(name)) {
-                newArray.add(g.get(i));
-            } else if(g.get(i).getName().toLowerCase().contains(name)) {
-                newArray.add(g.get(i)); 
-            }
-        }
+     	* Search algorithm for finding games based on name
+     	* @param name String representation of user's input
+     	* @return an arrayList of Games
+     	*/
+    	static ArrayList<Game> searchName (ArrayList<Game> g, String name) {
+        	ArrayList<Game> newArray = new ArrayList<Game>();
+        	name = name.toLowerCase();
+        	for (int i = 0; i < g.size(); ++i) {
+            		if (g.get(i).getName().equalsIgnoreCase(name)) {
+                		newArray.add(g.get(i));
+            		} else if(g.get(i).getName().toLowerCase().contains(name)) {
+                		newArray.add(g.get(i)); 
+            		}
+        	}
         
-        for(int i = 0; i < newArray.size(); ++i) {
-            System.out.println(newArray.get(i).toString());
-        }
-        return newArray;
-    }
+        	for(int i = 0; i < newArray.size(); ++i) {
+            		System.out.println(newArray.get(i).toString());
+        	}
+        	return newArray;
+    	}
 	
 	/**
 	 * Search algorithm for finding games based on publishers
