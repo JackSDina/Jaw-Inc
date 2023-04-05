@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 import java.awt.EventQueue;
 import java.io.*;
 
@@ -13,18 +14,20 @@ public class GameCheckDriver {
 	ArrayList<Game> gameArray = new ArrayList<Game>();
 	public static void main(String[] args) throws FileNotFoundException {
 		ArrayList<Game> gameData = fillData("steamdb2.1.txt");
-		System.out.println(gameData.size());
-		System.out.println(gameData.get(0).getName() + " " + gameData.get(0).getRating());
-		ArrayList<String> genreTest = convertGenres(gameData.get(0).getGenres());
+//		System.out.println(gameData.size());
+//		System.out.println(gameData.get(0).getName() + " " + gameData.get(0).getRating());
+//		ArrayList<String> genreTest = convertGenres(gameData.get(0).getGenres());
 		
-		for (int i = 0; i < genreTest.size(); i++) {
-			System.out.println(genreTest.get(i));
-		}
+//		for (int i = 0; i < genreTest.size(); i++) {
+//			System.out.println(genreTest.get(i));
+//		}
 		
 		EventQueue.invokeLater(new Runnable() {
             	public void run() {
                 	try {
                     Display frame = new Display(gameData);
+                    //frame.pack();
+                    frame.setLocationRelativeTo(null);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -98,22 +101,22 @@ public class GameCheckDriver {
 	* @param list ArrayList<Integer> list containing numbers corresponding to actions.
 	* @param info ArrayList<Object> list continaing extra info that the sub functions may need.
 	*/
-	void totalSearch(ArrayList<Integer> list, ArrayList<Object> info) {
+	 static Set<Game> totalSearch(ArrayList<Integer> list, ArrayList<Object> info, ArrayList<Game> g) {
 		ArrayList<Game> publisherInfo = new ArrayList<Game>();
 		ArrayList<Game> genreInfo = new ArrayList<Game>();
 		ArrayList<Game> platformInfo = new ArrayList<Game>();
 		//TODO by Dina
 		if (list.contains(1)) {
 			//search publisher
-			publisherInfo = searchPublisher((String)info.get(0));
+			publisherInfo = searchPublisher((String)info.get(0), g);
 		}
 		if (list.contains(2)) {
 			//search genre	
-			genreInfo  = searchGenre((int)info.get(1));
+			genreInfo  = searchGenre((String)info.get(1), g);
 		}
 		if (list.contains(3)) {
 			//search platforms
-			platformInfo = searchPlatforms((int)info.get(2));
+			platformInfo = searchPlatforms((int)info.get(2), g);
 		}
 		
 		Set<Game> finalList = new HashSet<Game> ();
@@ -126,6 +129,8 @@ public class GameCheckDriver {
 		while(finalListIterator.hasNext()) {
 			System.out.println(finalListIterator.next().toString());
 		}
+		
+		return finalList;
 		
 	}
 	
@@ -145,9 +150,9 @@ public class GameCheckDriver {
             		}
         	}
         
-        	for(int i = 0; i < newArray.size(); ++i) {
-            		System.out.println(newArray.get(i).toString());
-        	}
+//        	for(int i = 0; i < newArray.size(); ++i) {
+//            		System.out.println(newArray.get(i).toString());
+//        	}
         	return newArray;
     	}
 	
@@ -156,12 +161,12 @@ public class GameCheckDriver {
 	 * @param publisher String representation of user's input
 	 * @return an arrayList of Games
 	 */
-	ArrayList<Game> searchPublisher (String publisher) {
+	static ArrayList<Game> searchPublisher (String publisher, ArrayList<Game> g) {
 		ArrayList<Game> newArray = new ArrayList<Game>();
 		
-		for (int i = 0; i < gameArray.size(); ++i) {
-			if (gameArray.get(i).getPublisher().equalsIgnoreCase(publisher)) {
-				newArray.add(gameArray.get(i));
+		for (int i = 0; i < g.size(); ++i) {
+			if (g.get(i).getPublisher().equalsIgnoreCase(publisher)) {
+				newArray.add(g.get(i));
 			}
 		}
 		//for(int i = 0; i < newArray.size(); ++i) {
@@ -175,14 +180,21 @@ public class GameCheckDriver {
 	 * @param genre String representation of user's input
 	 * @return an arrayList of Games
 	 */
-	ArrayList<Game> searchGenre (int genre) {
+	static ArrayList<Game> searchGenre (String genre, ArrayList<Game> g) {
 		ArrayList<Game> newArray = new ArrayList<Game>();
 		
-		for (int i = 0; i < gameArray.size(); ++i) {
-			if (gameArray.get(i).getGenres().contains(genre)) {
-				newArray.add(gameArray.get(i));
-			}
-		}
+//		for (int i = 0; i < gameArray.size(); ++i) {
+//			if (gameArray.get(i).getGenres().contains(genre)) {
+//				newArray.add(gameArray.get(i));
+//			}
+//		}
+		for (int i = 0; i < g.size(); i++) {
+            ArrayList<String> genres = GameCheckDriver.convertGenres(g.get(i).getGenres());
+            List<String> lower = genres.stream().map(String::toLowerCase).collect(Collectors.toList());
+            if (lower.contains(genre.toLowerCase())) {
+                newArray.add(g.get(i));
+            }
+        }
 		//for(int i = 0; i < newArray.size(); ++i) {
 		//	System.out.println(newArray.get(i).toString());
 		//}
@@ -194,12 +206,12 @@ public class GameCheckDriver {
 	 * @param platforms String representation of user's input
 	 * @return an arrayList of Games
 	 */
-	ArrayList<Game> searchPlatforms (int platforms) {
+	static ArrayList<Game> searchPlatforms (int platforms, ArrayList<Game> g) {
 		ArrayList<Game> newArray = new ArrayList<Game>();
 		
-		for (int i = 0; i < gameArray.size(); ++i) {
-			if (gameArray.get(i).getPlatforms().contains(platforms)) {
-				newArray.add(gameArray.get(i));
+		for (int i = 0; i < g.size(); ++i) {
+			if (g.get(i).getPlatforms().contains(platforms)) {
+				newArray.add(g.get(i));
 			}
 		}
 		//for(int i = 0; i < newArray.size(); ++i) {
@@ -208,7 +220,7 @@ public class GameCheckDriver {
 		return newArray;
 	}
 	
-	void sortRating() {
+	static ArrayList<Game> sortRating(ArrayList<Game> g) {
 		//TODO Maybe
 //        for (int i = 1; i < gameArray.size(); ++i) {
 //            int key = gameArray.get(i).getRating();
@@ -222,18 +234,19 @@ public class GameCheckDriver {
 //        }
 		// Heapify function is called for the items in
 		// the array.
-		for (int i = gameArray.size()/2 - 1; i >= 0; --i) {
-			heapify(gameArray, gameArray.size(), i, 1);
+		for (int i = g.size()/2 - 1; i >= 0; --i) {
+			heapify(g, g.size(), i, 1);
 		}
 		
 		// Swaps each item in the array.
-		for (int i = gameArray.size()-1; i > 0; --i) {
-			swap(gameArray, i, 0);
-			heapify(gameArray, i, 0, 1);
+		for (int i = g.size()-1; i > 0; --i) {
+			swap(g, i, 0);
+			heapify(g, i, 0, 1);
 		}
+        return g;
 	}
 	
-	void sortPrice () {
+	static ArrayList<Game> sortPrice (ArrayList<Game> g) {
 		//TODO Maybe
 //		for (int i = 1; i < gameArray.size(); ++i) {
 //            float key = gameArray.get(i).getPrice();
@@ -245,30 +258,32 @@ public class GameCheckDriver {
 //            }
 //            gameArray.get(j+1).setPrice(key);
 //        }
-		for (int i = gameArray.size()/2 - 1; i >= 0; --i) {
-			heapify(gameArray, gameArray.size(), i, 2);
+		for (int i = g.size()/2 - 1; i >= 0; --i) {
+			heapify(g, g.size(), i, 2);
 		}
 		
 		// Swaps each item in the array.
-		for (int i = gameArray.size()-1; i > 0; --i) {
-			swap(gameArray, i, 0);
-			heapify(gameArray, i, 0, 2);
+		for (int i = g.size()-1; i > 0; --i) {
+			swap(g, i, 0);
+			heapify(g, i, 0, 2);
 		}
+        return g;
 
 	}
 	
-	void sortName() {
-		gameArray.sort((o1, o2)
+	static ArrayList<Game> sortName(ArrayList<Game> g) {
+		g.sort((o1, o2)
 				-> o1.getName().compareTo(o2.getName()));
+        return g;
 	}
 	
-	void swap (ArrayList<Game> gameArray, int next, int previous) {
+	static void swap (ArrayList<Game> gameArray, int next, int previous) {
 		Game temp = new Game(gameArray.get(previous));
 		gameArray.set(previous, gameArray.get(next));
 		gameArray.set(next, temp);
 	}
 	
-	void heapify (ArrayList<Game> gameArray, int size, int i, int sortType) {
+	static void heapify (ArrayList<Game> gameArray, int size, int i, int sortType) {
 		// Initializing variables needed for
 		// tree creation.
 		int root = i;
@@ -278,10 +293,10 @@ public class GameCheckDriver {
 		if (sortType == 1) {
 			// Checks to see if the left or right
 			// is larger then the root.
-			if ((right < size) && (gameArray.get(right).getRating() > gameArray.get(root).getRating())) {
+			if ((right < size) && (gameArray.get(right).getRating() < gameArray.get(root).getRating())) {
 				root = right;
 			}
-			if ((left < size) && (gameArray.get(left).getRating() > gameArray.get(root).getRating())) {
+			if ((left < size) && (gameArray.get(left).getRating() < gameArray.get(root).getRating())) {
 				root = left;
 			}
 			
