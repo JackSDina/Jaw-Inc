@@ -31,41 +31,52 @@ public class Game {
         platforms = pl;
         rating = r;
     }
-	
+    
     public Game(Game game) {
-    	this.name = game.name;
-    	this.price = game.price;
-    	this.genres = game.genres;
-    	this.platforms = game.platforms;
-    	this.rating = game.rating;
+        this.name = game.name;
+        this.price = game.price;
+        this.genres = game.genres;
+        this.platforms = game.platforms;
+        this.rating = game.rating;
     }
 
    // this method is used for the to string method
    public static ArrayList<String> convertGenres(Set<Integer> valCode) {
-		// Empty list to be filed with valid genres
-		ArrayList<String> genreList = new ArrayList<String>();
-		// Reference list containing all genres in order according to their code
-		ArrayList<String> genres = new ArrayList<String>(Arrays.asList("Indie", "Profile Features Limited", "Action",
-				"Casual", "Singleplayer", "Adventure", "Simulation", "Strategy", "RPG", "2D", "Atmospheric", "3D",
-				"Puzzle", "Pixel Graphics", "Fantasy", "Story Rich", "Colorful", "Exploration", "Free to Play", "Cute",
-				"Multiplayer", "Early Access", "First-Person", "Arcade", "Anime", "Shooter"));
-		for (int i = 0; i < 26; i++) {
-			if (valCode.contains(i)) {
-				genreList.add(genres.get(i));
-			}
-		}
-		return genreList;
-	}
-	
-	public String toString() {
-        String fullObj = name + " Rating: " + rating + " Genre Tags:";
+        // Empty list to be filed with valid genres
+        ArrayList<String> genreList = new ArrayList<String>();
+        // Reference list containing all genres in order according to their code
+        ArrayList<String> genres = new ArrayList<String>(Arrays.asList("Indie", "Profile Features Limited", "Action",
+                "Casual", "Singleplayer", "Adventure", "Simulation", "Strategy", "RPG", "2D", "Atmospheric", "3D",
+                "Puzzle", "Pixel Graphics", "Fantasy", "Story Rich", "Colorful", "Exploration", "Free to Play", "Cute",
+                "Multiplayer", "Early Access", "First-Person", "Arcade", "Anime", "Shooter"));
+        for (int i = 0; i < 26; i++) {
+            if (valCode.contains(i)) {
+                genreList.add(genres.get(i));
+            }
+        }
+        return genreList;
+    }
+    
+    public String toString() {
+        String fullObj = name + "\nRating: " + rating + "%\nGenre Tags: ";
         ArrayList<String> genreList = convertGenres(genres);
         for (int i = 0; i < genreList.size() - 1; i++) {
-			fullObj += " " + genreList.get(i) + ",";
-		}
-        fullObj += " " + genreList.get(genreList.size() - 1);
+            fullObj += " " + genreList.get(i) + ",";
+        }
+        fullObj += " " + genreList.get(genreList.size() - 1) + "\n";        
         return fullObj;
     }
+    
+//    public String toStringNoTitle() {
+//        String fullObj = "\n Rating: " + rating + "\n Genre Tags: ";
+//        ArrayList<String> genreList = convertGenres(genres);
+//        for (int i = 0; i < genreList.size() - 1; i++) {
+//            fullObj += " " + genreList.get(i) + ",";
+//        }
+//        fullObj += " " + genreList.get(genreList.size() - 1) + "\n";        
+//        return fullObj;
+//    }
+    
     
     // Auto generated getters and setters
     public String getName() {
@@ -91,9 +102,23 @@ public class Game {
     public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
-
+    
     public Set<Integer> getGenres() {
         return genres;
+    }
+    
+    /**
+     * Used for table formatting in UI output, subject to change
+     * @return deeznuts
+     */
+    public String getStringGenres() {
+        ArrayList<String> genres = convertGenres(this.genres);
+        String ret = "<html>";
+        for (String s : genres) {
+            ret += s + "<br>";
+        }
+        ret += "</html>";
+        return ret;
     }
 
     public void setGenres(Set<Integer> genres) {
@@ -116,13 +141,14 @@ public class Game {
         this.rating = rating;
     }
     
+    @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof Game)) {
             return false;
         }
         
         Game g = (Game)o;
-        return this.name.equals(g.name);
+        return this.name.equals(g.getName());
     }
 
 }
