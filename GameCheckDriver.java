@@ -26,7 +26,6 @@ public class GameCheckDriver {
             public void run() {
                 try {
                     Display frame = new Display(gameData);
-                    //frame.pack();
                     frame.setLocationRelativeTo(null);
                     frame.setVisible(true);
                 } catch (Exception e) {
@@ -124,11 +123,11 @@ public class GameCheckDriver {
         finalList.addAll(genreInfo);
         finalList.addAll(platformInfo);
 
-        Iterator<Game> finalListIterator = finalList.iterator();
-
-        while(finalListIterator.hasNext()) {
-            System.out.println(finalListIterator.next().toString());
-        }
+//        Iterator<Game> finalListIterator = finalList.iterator();
+//
+//        while(finalListIterator.hasNext()) {
+//            System.out.println(finalListIterator.next().toString());
+//        }
 
         return finalList;
 
@@ -181,9 +180,8 @@ public class GameCheckDriver {
             finalList = searchPlatforms((int)info.get(2), g);
             
         }
-        
-        Set<Game> set = new HashSet<Game>(finalList);         
-        return set;
+                 
+        return new HashSet<Game>(finalList);
         
     }
 
@@ -203,9 +201,9 @@ public class GameCheckDriver {
             }
         }
 
-        //        	for(int i = 0; i < newArray.size(); ++i) {
-        //            		System.out.println(newArray.get(i).toString());
-        //        	}
+//        for(int i = 0; i < newArray.size(); ++i) {
+//            System.out.println(newArray.get(i).toString());
+//        }
         return newArray;
     }
 
