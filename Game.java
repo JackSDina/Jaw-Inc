@@ -31,13 +31,13 @@ public class Game {
         platforms = pl;
         rating = r;
     }
-	
+    
     public Game(Game game) {
-    	this.name = game.name;
-    	this.price = game.price;
-    	this.genres = game.genres;
-    	this.platforms = game.platforms;
-    	this.rating = game.rating;
+        this.name = game.name;
+        this.price = game.price;
+        this.genres = game.genres;
+        this.platforms = game.platforms;
+        this.rating = game.rating;
     }
 
     /**
@@ -57,7 +57,7 @@ public class Game {
         }
         return platformList;
     }
-	
+    
    public String toString() {
        String fullObj = name + "\nRating: " + rating + "\nPrice: " + price + "\n" + "Platforms:";
        ArrayList<String> platformList = convertPlatforms(platforms);
@@ -109,19 +109,19 @@ public class Game {
         return genres;
     }
     
-    /**
-     * Used for table formatting in UI output, subject to change
-     * @return deeznuts
-     */
-    public String getStringGenres() {
-        ArrayList<String> genres = convertGenres(this.genres);
-        String ret = "<html>";
-        for (String s : genres) {
-            ret += s + "<br>";
-        }
-        ret += "</html>";
-        return ret;
-    }
+//    /**
+//     * Used for table formatting in UI output, subject to change
+//     * @return deeznuts
+//     */
+//    public String getStringGenres() {
+//        ArrayList<String> genres = convertGenres(this.genres);
+//        String ret = "<html>";
+//        for (String s : genres) {
+//            ret += s + "<br>";
+//        }
+//        ret += "</html>";
+//        return ret;
+//    }
 
     public void setGenres(String genres) {
         this.genres = genres;
