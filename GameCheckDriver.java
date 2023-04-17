@@ -42,19 +42,27 @@ public class GameCheckDriver {
      * @return an arrayList containing all games listed in the file.
      * @throws FileNotFoundException
      */
+    /**
+     * Reads data from file one line at a time to add game objects to an arrayList
+     * @param fileName string file name containing the data, meant to read from a 3
+     * column format
+     * @return an arrayList containing all games listed in the file.
+     * @throws FileNotFoundException
+     */
     public static ArrayList<Game> fillData(String fileName) throws FileNotFoundException {
         ArrayList<Game> gameData = new ArrayList();
         File rawData = new File(fileName);
         Scanner fileReader = new Scanner(rawData);
-        fileReader.nextLine();
         while (fileReader.hasNextLine()) {
             String line = fileReader.nextLine();
-            String[] separatedLine = new String[3];
+            String[] separatedLine = new String[5];
             separatedLine = line.split("\t");
-            Set<Integer> genres = genreReader(separatedLine[2]);
+            String genres = separatedLine[4];
             Set<Integer> platforms = new HashSet<Integer>();
+            platforms = platformReader(separatedLine[3]);
             int rating = Integer.parseInt(separatedLine[1]);
-            gameData.add(new Game(separatedLine[0], 0.0f, "", genres, platforms, rating));
+            float price = Float.parseFloat(separatedLine[2]);
+            gameData.add(new Game(separatedLine[0], price, "", separatedLine[4], platforms, rating));
         }
         return gameData;
     }
