@@ -10,7 +10,7 @@ public class Game {
     String name;
     float price;
     String publisher;
-    Set<Integer> genres;
+    String genres;
     Set<Integer> platforms;
     int rating;
 
@@ -19,11 +19,11 @@ public class Game {
      * @param n Name string.
      * @param pr Price float.
      * @param pb Publisher string.
-     * @param g Set of integers representing game genres.
+     * @param String of genres.
      * @param pl Set of integers representing platforms.
      * @param r Rating integer.
      */
-    public Game(String n, float pr, String pb, Set<Integer> g, Set<Integer> pl,
+    public Game(String n, float pr, String pb, String g, Set<Integer> pl,
     int r) {
         name = n;
         price = pr;
@@ -31,41 +31,43 @@ public class Game {
         platforms = pl;
         rating = r;
     }
-    
+	
     public Game(Game game) {
-        this.name = game.name;
-        this.price = game.price;
-        this.genres = game.genres;
-        this.platforms = game.platforms;
-        this.rating = game.rating;
+    	this.name = game.name;
+    	this.price = game.price;
+    	this.genres = game.genres;
+    	this.platforms = game.platforms;
+    	this.rating = game.rating;
     }
 
-   // this method is used for the to string method
-   public static ArrayList<String> convertGenres(Set<Integer> valCode) {
-        // Empty list to be filed with valid genres
-        ArrayList<String> genreList = new ArrayList<String>();
-        // Reference list containing all genres in order according to their code
-        ArrayList<String> genres = new ArrayList<String>(Arrays.asList("Indie", "Profile Features Limited", "Action",
-                "Casual", "Singleplayer", "Adventure", "Simulation", "Strategy", "RPG", "2D", "Atmospheric", "3D",
-                "Puzzle", "Pixel Graphics", "Fantasy", "Story Rich", "Colorful", "Exploration", "Free to Play", "Cute",
-                "Multiplayer", "Early Access", "First-Person", "Arcade", "Anime", "Shooter"));
-        for (int i = 0; i < 26; i++) {
+    /**
+     * This list converts the int code for platforms into their respective platform strings
+     * @param valCode Set of integers representing platform in the list
+     * @return an arrayList of platform strings
+     */
+    public static ArrayList<String> convertPlatforms(Set<Integer> valCode) {
+        // Empty list to be filed with valid platforms
+        ArrayList<String> platformList = new ArrayList<String>();
+        // Reference list containing all platforms in order according to their code
+        ArrayList<String> platforms = new ArrayList<String>(Arrays.asList(" Windows", "Mac", " Linux"));
+        for (int i = 0; i < 3; i++) {
             if (valCode.contains(i)) {
-                genreList.add(genres.get(i));
+                platformList.add(platforms.get(i));
             }
         }
-        return genreList;
+        return platformList;
     }
-    
-    public String toString() {
-        String fullObj = name + "\nRating: " + rating + "%\nGenre Tags: ";
-        ArrayList<String> genreList = convertGenres(genres);
-        for (int i = 0; i < genreList.size() - 1; i++) {
-            fullObj += " " + genreList.get(i) + ",";
-        }
-        fullObj += " " + genreList.get(genreList.size() - 1) + "\n";        
-        return fullObj;
-    }
+	
+   public String toString() {
+       String fullObj = name + "\nRating: " + rating + "\nPrice: " + price + "\n" + "Platforms:";
+       ArrayList<String> platformList = convertPlatforms(platforms);
+       for (int i = 0; i < platformList.size() - 1; i++) {
+           fullObj += " " + platformList.get(i) + ",";
+       }
+       fullObj +=  platformList.get(platformList.size() - 1) + "\nGenre Tags: " + genres + "\n";  
+       fullObj += "________________________________________________";
+       return fullObj;
+   }
     
 //    public String toStringNoTitle() {
 //        String fullObj = "\n Rating: " + rating + "\n Genre Tags: ";
@@ -103,7 +105,7 @@ public class Game {
         this.publisher = publisher;
     }
     
-    public Set<Integer> getGenres() {
+    public String getGenres() {
         return genres;
     }
     
