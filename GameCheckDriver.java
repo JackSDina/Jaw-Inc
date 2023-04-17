@@ -13,14 +13,14 @@ public class GameCheckDriver {
 
     ArrayList<Game> gameArray = new ArrayList<Game>();
     public static void main(String[] args) throws FileNotFoundException {
-        ArrayList<Game> gameData = fillData("steamdb2.1.txt");
-        //		System.out.println(gameData.size());
-        //		System.out.println(gameData.get(0).getName() + " " + gameData.get(0).getRating());
-        //		ArrayList<String> genreTest = convertGenres(gameData.get(0).getGenres());
+        ArrayList<Game> gameData = fillData("steamdbTEST.txt");
+        //      System.out.println(gameData.size());
+        //      System.out.println(gameData.get(0).getName() + " " + gameData.get(0).getRating());
+        //      ArrayList<String> genreTest = convertGenres(gameData.get(0).getGenres());
 
-        //		for (int i = 0; i < genreTest.size(); i++) {
-        //			System.out.println(genreTest.get(i));
-        //		}
+        //      for (int i = 0; i < genreTest.size(); i++) {
+        //          System.out.println(genreTest.get(i));
+        //      }
 
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -115,12 +115,12 @@ public class GameCheckDriver {
             publisherInfo = searchPublisher((String)info.get(0), g);
         }
         if (list.contains(2)) {
-            //search genre	
+            //search genre  
             genreInfo  = searchGenre((String)info.get(1), g);
         }
         if (list.contains(3)) {
             //search platforms
-            platformInfo = searchPlatforms((int)info.get(2), g);
+            platformInfo = searchPlatforms((String)info.get(2), g);
         }
 
         Set<Game> finalList = new HashSet<Game> ();
@@ -150,7 +150,7 @@ public class GameCheckDriver {
             // search publisher, genre, and platform
             finalList = searchPublisher((String)info.get(0), g);
             ArrayList<Game> genreList = searchGenre((String)info.get(1), g);
-            ArrayList<Game> platformList = searchPlatforms((int)info.get(2), g);
+            ArrayList<Game> platformList = searchPlatforms((String)info.get(2), g);
             finalList.retainAll(genreList);
             finalList.retainAll(platformList);
             
@@ -163,13 +163,13 @@ public class GameCheckDriver {
         } else if (list.contains(2) && list.contains(3)) {
             //search genre and platform
             finalList = searchGenre((String)info.get(1), g);
-            ArrayList<Game> platformList = searchPlatforms((int)info.get(2), g);
+            ArrayList<Game> platformList = searchPlatforms((String)info.get(2), g);
             finalList.retainAll(platformList);
             
         } else if (list.contains(1) && list.contains(3)) {
             //search publisher and platform
             finalList = searchPublisher((String)info.get(0), g);
-            ArrayList<Game> platformList = searchPlatforms((int)info.get(2), g);
+            ArrayList<Game> platformList = searchPlatforms((String)info.get(2), g);
             finalList.retainAll(platformList);
             
         } else if (list.contains(1)) {
@@ -182,7 +182,7 @@ public class GameCheckDriver {
             
         } else {
             // platform
-            finalList = searchPlatforms((int)info.get(2), g);
+            finalList = searchPlatforms((String)info.get(2), g);
             
         }
                  
@@ -226,7 +226,7 @@ public class GameCheckDriver {
             }
         }
         //for(int i = 0; i < newArray.size(); ++i) {
-        //	System.out.println(newArray.get(i).toString());
+        //  System.out.println(newArray.get(i).toString());
         //}
         return newArray;
     }
@@ -239,7 +239,7 @@ public class GameCheckDriver {
     static ArrayList<Game> searchGenre (String genre, ArrayList<Game> g) {
         ArrayList<Game> newArray = new ArrayList<Game>();
 
-         //      for (int i = 0; i < gameArray.size(); ++i) {
+        //      for (int i = 0; i < gameArray.size(); ++i) {
         //          if (gameArray.get(i).getGenres().contains(genre)) {
         //              newArray.add(gameArray.get(i));
         //          }
@@ -262,16 +262,18 @@ public class GameCheckDriver {
      * @param platforms String representation of user's input
      * @return an arrayList of Games
      */
-    static ArrayList<Game> searchPlatforms (int platforms, ArrayList<Game> g) {
+    static ArrayList<Game> searchPlatforms (String platform, ArrayList<Game> g) {
         ArrayList<Game> newArray = new ArrayList<Game>();
 
         for (int i = 0; i < g.size(); ++i) {
-            if (g.get(i).getPlatforms().contains(platforms)) {
+            ArrayList<String> platforms = convertPlatforms(g.get(i).getPlatforms());
+            List<String> lower = platforms.stream().map(String::toLowerCase).collect(Collectors.toList());
+            if (lower.contains(platform.toLowerCase())) {
                 newArray.add(g.get(i));
             }
         }
         //for(int i = 0; i < newArray.size(); ++i) {
-        //	System.out.println(newArray.get(i).toString());
+        //  System.out.println(newArray.get(i).toString());
         //}
         return newArray;
     }
@@ -283,7 +285,7 @@ public class GameCheckDriver {
         //            int j = i - 1;
         //
         //            while (j >= 0 && gameArray.get(j).getRating() > key) {
-        //            	gameArray.set(j+1, gameArray.get(j));
+        //              gameArray.set(j+1, gameArray.get(j));
         //                j = j - 1;
         //            }
         //            gameArray.get(j+1).setRating(key);
@@ -304,12 +306,12 @@ public class GameCheckDriver {
 
     static ArrayList<Game> sortPrice (ArrayList<Game> g) {
         //TODO Maybe
-        //		for (int i = 1; i < gameArray.size(); ++i) {
+        //      for (int i = 1; i < gameArray.size(); ++i) {
         //            float key = gameArray.get(i).getPrice();
         //            int j = i - 1;
         // 
         //            while (j >= 0 && gameArray.get(j).getPrice() > key) {
-        //            	gameArray.set(j+1, gameArray.get(j));
+        //              gameArray.set(j+1, gameArray.get(j));
         //                j = j - 1;
         //            }
         //            gameArray.get(j+1).setPrice(key);
