@@ -123,7 +123,7 @@ public class Game {
         return ret;
     }
 
-    public void setGenres(Set<Integer> genres) {
+    public void setGenres(String genres) {
         this.genres = genres;
     }
 
