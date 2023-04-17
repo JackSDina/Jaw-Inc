@@ -238,12 +238,15 @@ public class GameCheckDriver {
      */
     static ArrayList<Game> searchGenre (String genre, ArrayList<Game> g) {
         ArrayList<Game> newArray = new ArrayList<Game>();
-
-        //      for (int i = 0; i < gameArray.size(); ++i) {
-        //          if (gameArray.get(i).getGenres().contains(genre)) {
-        //              newArray.add(gameArray.get(i));
-        //          }
-        //      }
+        
+        String newGenre = genre.toLowerCase();
+		
+		for (int i = 0; i < gameArray.size(); ++i) {
+			String gameGenres = gameArray.get(i).getGenres().toLowerCase();
+			if (gameGenres.contains(newGenre)) {
+				newArray.add(gameArray.get(i));
+			}
+		}
 //        for (int i = 0; i < g.size(); i++) {
 //            ArrayList<String> genres = GameCheckDriver.convertGenres(g.get(i).getGenres());
 //            List<String> lower = genres.stream().map(String::toLowerCase).collect(Collectors.toList());
