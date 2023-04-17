@@ -72,9 +72,9 @@ public class GameCheckDriver {
      * @param binaryCode string of 1s and 0s, representing a game's genre
      * @return Int set that represent the genres that correspond to a game
      */
-    public static Set<Integer> genreReader(String binaryCode) {
+    public static Set<Integer> platformReader(String binaryCode) {
         Set<Integer> genres = new HashSet<Integer>();
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < 3; i++) {
             if (binaryCode.substring(i, i + 1).equals("1")) {
                 genres.add(i);
             }
@@ -83,26 +83,23 @@ public class GameCheckDriver {
     }
 
     /**
-     * This list converts the int code for genres into their respective genre strings
-     * @param valCode Set of integers representing genres in the list
-     * @return an arrayList of genre strings
+     * This list converts the int code for platforms into their respective platform strings
+     * @param valCode Set of integers representing platform in the list
+     * @return an arrayList of platform strings
      */
-    public static ArrayList<String> convertGenres(Set<Integer> valCode) {
-        // Empty list to be filed with valid genres
-        ArrayList<String> genreList = new ArrayList<String>();
-        // Reference list containing all genres in order according to their code
-        ArrayList<String> genres = new ArrayList<String>(Arrays.asList("Indie", "Profile Features Limited", "Action",
-                "Casual", "Singleplayer", "Adventure", "Simulation", "Strategy", "RPG", "2D", "Atmospheric", "3D",
-                "Puzzle", "Pixel Graphics", "Fantasy", "Story Rich", "Colorful", "Exploration", "Free to Play", "Cute",
-                "Multiplayer", "Early Access", "First-Person", "Arcade", "Anime", "Shooter"));
-        for (int i = 0; i < 26; i++) {
+    public static ArrayList<String> convertPlatforms(Set<Integer> valCode) {
+        // Empty list to be filed with valid platforms
+        ArrayList<String> platformList = new ArrayList<String>();
+        // Reference list containing all platforms in order according to their code
+        ArrayList<String> platforms = new ArrayList<String>(Arrays.asList("Windows", "Mac", "Linux"));
+        for (int i = 0; i < 3; i++) {
             if (valCode.contains(i)) {
-                genreList.add(genres.get(i));
+                platformList.add(platforms.get(i));
             }
         }
-        return genreList;
+        return platformList;
     }
-
+       
     /**
      * Searches based off of multiple criteria.
      * @param list ArrayList<Integer> list containing numbers corresponding to actions.
