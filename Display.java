@@ -97,8 +97,10 @@ public class Display extends JFrame {
         JTextField platform = new JTextField(15);
         JButton submitQuestion = new JButton("Search");
         submitQuestion.setFont(defaultFont);
-        JButton submitParams = new JButton("Search by params");
+        JButton submitParams = new JButton("Search by params (inclusive)");
         submitParams.setFont(defaultFont);
+        JButton submitExParams = new JButton("Search by params (exclusive)");
+        submitExParams.setFont(defaultFont);
         JButton sortRating = new JButton("Sort by rating");
         sortRating.setFont(defaultFont);
         JButton sortName = new JButton("Sort by name");
@@ -111,7 +113,8 @@ public class Display extends JFrame {
 
         // Add actionlisteners to buttons
         submitQuestion.addActionListener(e -> showResults(search.getText()));
-        submitParams.addActionListener(e -> displayParamSearch(genre.getText(), platform.getText()));
+        submitParams.addActionListener(e -> displayParamSearch(genre.getText(), platform.getText(), 0));
+        submitExParams.addActionListener(e -> displayParamSearch(genre.getText(), platform.getText(), 1));
         sortRating.addActionListener(e -> sortBy(0));
         sortName.addActionListener(e -> sortBy(1));
         sortPrice.addActionListener(e -> sortBy(2));
@@ -132,6 +135,7 @@ public class Display extends JFrame {
         submitQuestionsPanel.add(platformSearchOption);
         submitQuestionsPanel.add(platform);        
         submitQuestionsPanel.add(submitParams);
+        submitQuestionsPanel.add(submitExParams);
         JLabel sortInfo = new JLabel("Sort the list:");
         sortInfo.setFont(new Font("Helvetica", Font.BOLD, 14));
         submitQuestionsPanel.add(sortInfo);
@@ -225,7 +229,7 @@ public class Display extends JFrame {
     /*
      * Generates and displays results of param search
      */
-    private void displayParamSearch(String genre, String platform) {
+    private void displayParamSearch(String genre, String platform, int searchCode) {
         searchResultPanel.removeAll();
         searchResultPanel.revalidate();
         searchResultPanel.repaint();
@@ -233,22 +237,39 @@ public class Display extends JFrame {
         JTextArea textArea = new JTextArea(23, 35);
         textArea.setFont(new Font("Helvetica", Font.PLAIN, 14));
         JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
-        
         boolean entered = false;
         Set<Game> finalList = new HashSet<Game>();
-        ArrayList<Object> inputArr = new ArrayList<Object>(Arrays.asList(null, genre, platform));
-        if (genre.isEmpty() && platform.isEmpty()) { // both empty
-            textArea.setText("You didn't enter anything.");
-        } else if (platform.isEmpty()) {  // find only genre
-            entered = true;
-            finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(null, 2, null)), inputArr, liveArray);
-            //finalList = GameCheckDriver.exclusiveTotalSearch(new ArrayList<Integer>(Arrays.asList(2)), inputArr, liveArray);
-        } else if (genre.isEmpty()) { // find only platform
-            entered = true;
-            finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(null, null, 3)), inputArr, liveArray);
-        } else { // find genre and platform
-            entered = true;
-            finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(null, 2, 3)), inputArr, liveArray);
+        
+        if (searchCode == 0) {           
+            ArrayList<Object> inputArr = new ArrayList<Object>(Arrays.asList(null, genre, platform));
+            if (genre.isEmpty() && platform.isEmpty()) { // both empty
+                textArea.setText("You didn't enter anything.");
+            } else if (platform.isEmpty()) {  // find only genre
+                entered = true;
+                finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(null, 2, null)), inputArr, liveArray);
+                //finalList = GameCheckDriver.exclusiveTotalSearch(new ArrayList<Integer>(Arrays.asList(2)), inputArr, liveArray);
+            } else if (genre.isEmpty()) { // find only platform
+                entered = true;
+                finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(null, null, 3)), inputArr, liveArray);
+            } else { // find genre and platform
+                entered = true;
+                finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(null, 2, 3)), inputArr, liveArray);
+            }
+        } else {
+            ArrayList<Object> inputArr = new ArrayList<Object>(Arrays.asList(null, genre, platform));
+            if (genre.isEmpty() && platform.isEmpty()) { // both empty
+                textArea.setText("You didn't enter anything.");
+            } else if (platform.isEmpty()) {  // find only genre
+                entered = true;
+                //finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(null, 2, null)), inputArr, liveArray);
+                finalList = GameCheckDriver.exclusiveTotalSearch(new ArrayList<Integer>(Arrays.asList(null, 2, null)), inputArr, liveArray);
+            } else if (genre.isEmpty()) { // find only platform
+                entered = true;
+                finalList = GameCheckDriver.exclusiveTotalSearch(new ArrayList<Integer>(Arrays.asList(null, null, 3)), inputArr, liveArray);
+            } else { // find genre and platform
+                entered = true;
+                finalList = GameCheckDriver.exclusiveTotalSearch(new ArrayList<Integer>(Arrays.asList(null, 2, 3)), inputArr, liveArray);
+            }
         }
         //ArrayList<Game> sorted = GameCheckDriver.sortRating(finalList);
         
