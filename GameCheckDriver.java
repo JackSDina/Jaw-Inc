@@ -50,20 +50,20 @@ public class GameCheckDriver {
      * @throws FileNotFoundException
      */
     public static ArrayList<Game> fillData(String fileName) throws FileNotFoundException {
-        ArrayList<Game> gameData = new ArrayList();
+        ArrayList<Game> gameData = new ArrayList<Game>();
         File rawData = new File(fileName);
         Scanner fileReader = new Scanner(rawData);
         while (fileReader.hasNextLine()) {
             String line = fileReader.nextLine();
             String[] separatedLine = new String[5];
             separatedLine = line.split("\t");
-            String genres = separatedLine[4];
             Set<Integer> platforms = new HashSet<Integer>();
             platforms = platformReader(separatedLine[3]);
             int rating = Integer.parseInt(separatedLine[1]);
             float price = Float.parseFloat(separatedLine[2]);
             gameData.add(new Game(separatedLine[0], price, "", separatedLine[4], platforms, rating));
         }
+        fileReader.close();
         return gameData;
     }
 
@@ -236,7 +236,7 @@ public class GameCheckDriver {
      * @param genre String representation of user's input
      * @return an arrayList of Games
      */
-    static ArrayList<Game> searchGenre (String genre, ArrayList<Game> g) {
+    static ArrayList<Game> searchGenre (String genre, ArrayList<Game> gameArray) {
         ArrayList<Game> newArray = new ArrayList<Game>();
         
         String newGenre = genre.toLowerCase();
