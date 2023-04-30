@@ -1,27 +1,27 @@
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.GridBagLayout;
+//import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
+//import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
+//import javax.swing.table.DefaultTableModel;
 
-import java.util.Iterator;
+//import java.util.Iterator;
 
 import java.awt.Color;
-import java.awt.ComponentOrientation;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+//import java.awt.ComponentOrientation;
+//import java.awt.Dimension;
+//import java.awt.FlowLayout;
 
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
+//import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +36,11 @@ import java.util.Set;
  */
 public class Display extends JFrame {
 
-    private ArrayList<Game> games;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private ArrayList<Game> games;
     private ArrayList<Game> liveArray;
     private JPanel contentPane;
     private String input;
@@ -50,7 +54,6 @@ public class Display extends JFrame {
      * 
      * @param The array of games
      */
-    @SuppressWarnings("resource")
     public Display(ArrayList<Game> games) {
         this.games = games;
         this.liveArray = games;
@@ -326,4 +329,3 @@ public class Display extends JFrame {
     }
 
 }
-
