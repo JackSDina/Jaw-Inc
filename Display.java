@@ -1,27 +1,27 @@
 import java.awt.BorderLayout;
 import java.awt.Font;
-//import java.awt.GridBagLayout;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-//import javax.swing.JTable;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-//import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableModel;
 
-//import java.util.Iterator;
+import java.util.Iterator;
 
 import java.awt.Color;
-//import java.awt.ComponentOrientation;
-//import java.awt.Dimension;
-//import java.awt.FlowLayout;
+import java.awt.ComponentOrientation;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
-//import javax.swing.GroupLayout;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,11 +36,7 @@ import java.util.Set;
  */
 public class Display extends JFrame {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private ArrayList<Game> games;
+    private ArrayList<Game> games;
     private ArrayList<Game> liveArray;
     private JPanel contentPane;
     private String input;
@@ -54,6 +50,7 @@ public class Display extends JFrame {
      * 
      * @param The array of games
      */
+    @SuppressWarnings("resource")
     public Display(ArrayList<Game> games) {
         this.games = games;
         this.liveArray = games;
@@ -69,7 +66,7 @@ public class Display extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
-        setLayout(new GridLayout());
+        setLayout(new GridLayout(1, 2, 0, 0));
 
 
         // Print title
@@ -86,35 +83,38 @@ public class Display extends JFrame {
         
         JLabel searchQuestion = new JLabel("Search for a game by name: ");
         searchQuestion.setFont(new Font("Helvetica", Font.BOLD, 15));
-        JLabel publisherSearchOption = new JLabel("Publisher?");
+        //JLabel publisherSearchOption = new JLabel("Publisher?");
         JLabel genreSearchOption = new JLabel("Genre?");
         JLabel platformSearchOption = new JLabel("Platform?");
         platformSearchOption.setFont(defaultFont);
         genreSearchOption.setFont(defaultFont);
-        publisherSearchOption.setFont(defaultFont);
+        //publisherSearchOption.setFont(defaultFont);
         
         
         JTextField search = new JTextField(20);
-        JTextField publisher = new JTextField(15);
+        //JTextField publisher = new JTextField(15);
         JTextField genre = new JTextField(15);
         JTextField platform = new JTextField(15);
         JButton submitQuestion = new JButton("Search");
         submitQuestion.setFont(defaultFont);
         JButton submitParams = new JButton("Search by params");
         submitParams.setFont(defaultFont);
-        JButton sortRating = new JButton("Sort all by rating");
+        JButton sortRating = new JButton("Sort by rating");
         sortRating.setFont(defaultFont);
-        JButton sortName = new JButton("Sort all by name");
+        JButton sortName = new JButton("Sort by name");
         sortName.setFont(defaultFont);
+        JButton sortPrice = new JButton("Sort by price");
+        sortPrice.setFont(defaultFont);       
         
         // Enables use of enter key to press submit button
         getRootPane().setDefaultButton(submitQuestion);
 
         // Add actionlisteners to buttons
         submitQuestion.addActionListener(e -> showResults(search.getText()));
-        submitParams.addActionListener(e -> displayParamSearch(publisher.getText(), genre.getText(), platform.getText()));
+        submitParams.addActionListener(e -> displayParamSearch(genre.getText(), platform.getText()));
         sortRating.addActionListener(e -> sortBy(0));
         sortName.addActionListener(e -> sortBy(1));
+        sortPrice.addActionListener(e -> sortBy(2));
         
         // TODO: fix layout 💀💀💀💀💀💀💀💀
         submitQuestionsPanel.setLayout(new BoxLayout(submitQuestionsPanel, BoxLayout.PAGE_AXIS));
@@ -125,8 +125,8 @@ public class Display extends JFrame {
         JLabel prompt = new JLabel("Or, filter games by these parameters:");
         prompt.setFont(new Font("Helvetica", Font.BOLD, 14));
         submitQuestionsPanel.add(prompt);
-        submitQuestionsPanel.add(publisherSearchOption);
-        submitQuestionsPanel.add(publisher);
+//        submitQuestionsPanel.add(publisherSearchOption);
+//        submitQuestionsPanel.add(publisher);
         submitQuestionsPanel.add(genreSearchOption);
         submitQuestionsPanel.add(genre);
         submitQuestionsPanel.add(platformSearchOption);
@@ -137,6 +137,7 @@ public class Display extends JFrame {
         submitQuestionsPanel.add(sortInfo);
         submitQuestionsPanel.add(sortName);
         submitQuestionsPanel.add(sortRating);
+        submitQuestionsPanel.add(sortPrice);
         
         
         //submitQuestionsPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
@@ -224,7 +225,7 @@ public class Display extends JFrame {
     /*
      * Generates and displays results of param search
      */
-    private void displayParamSearch(String publisher, String genre, String platform) {
+    private void displayParamSearch(String genre, String platform) {
         searchResultPanel.removeAll();
         searchResultPanel.revalidate();
         searchResultPanel.repaint();
@@ -235,31 +236,19 @@ public class Display extends JFrame {
         
         boolean entered = false;
         Set<Game> finalList = new HashSet<Game>();
-        ArrayList<Object> inputArr = new ArrayList<Object>(Arrays.asList(publisher, genre, platform));
-        if (genre.isEmpty() && publisher.isEmpty() && platform.isEmpty()) {
+        ArrayList<Object> inputArr = new ArrayList<Object>(Arrays.asList(null, genre, platform));
+        if (genre.isEmpty() && platform.isEmpty()) { // both empty
             textArea.setText("You didn't enter anything.");
-        } else if (publisher.isEmpty() && platform.isEmpty()) {  // find only genre
+        } else if (platform.isEmpty()) {  // find only genre
             entered = true;
-            finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(2)), inputArr, liveArray);
+            finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(null, 2, null)), inputArr, liveArray);
             //finalList = GameCheckDriver.exclusiveTotalSearch(new ArrayList<Integer>(Arrays.asList(2)), inputArr, liveArray);
-        } else if (genre.isEmpty() && platform.isEmpty()) { // find only publisher 
+        } else if (genre.isEmpty()) { // find only platform
             entered = true;
-            finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(1)), inputArr, liveArray);
-        } else if (genre.isEmpty() && publisher.isEmpty()) { // find only platform
+            finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(null, null, 3)), inputArr, liveArray);
+        } else { // find genre and platform
             entered = true;
-            finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(3)), inputArr, liveArray);
-        } else if (platform.isEmpty()) { // find publisher and genre
-            entered = true;
-            finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(1, 2)), inputArr, liveArray);
-        } else if (genre.isEmpty()) { // find publisher and platform
-            entered = true;
-            finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(1, 3)), inputArr, liveArray);
-        } else if (publisher.isEmpty()) { // find genre and platform
-            entered = true;
-            finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(2, 3)), inputArr, liveArray);
-        } else { // find publisher, genre, and platform
-            entered = true;
-            finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(1, 2, 3)), inputArr, liveArray);
+            finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(null, 2, 3)), inputArr, liveArray);
         }
         //ArrayList<Game> sorted = GameCheckDriver.sortRating(finalList);
         
@@ -270,9 +259,10 @@ public class Display extends JFrame {
             list.addAll(finalList);
             if (sortByCode == 0) {
                 list = GameCheckDriver.sortRating(list);
-            } else {
+            } else if (sortByCode == 1) {
                 list = GameCheckDriver.sortName(list);
-                
+            } else {
+                list = GameCheckDriver.sortPrice(list);
             }
 //            Iterator<Game> finalListIterator = finalList.iterator();            
 //            while(finalListIterator.hasNext()) {
@@ -308,9 +298,12 @@ public class Display extends JFrame {
         if (code == 0) {
             liveArray = GameCheckDriver.sortRating(games);
             sortByCode = 0;
-        } else {
+        } else if (code == 1) {
             liveArray = GameCheckDriver.sortName(games);
             sortByCode = 1;
+        } else {
+            liveArray = GameCheckDriver.sortPrice(games);
+            sortByCode = 2;
         }
         
         for (int i = 0; i < liveArray.size(); i++) {
@@ -329,3 +322,4 @@ public class Display extends JFrame {
     }
 
 }
+
