@@ -389,8 +389,3 @@ public class GameCheckDriver {
 
     }
 }
-
-/**
- * William
- * for later: check genre and platform params
- */
