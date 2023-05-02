@@ -28,17 +28,22 @@ import java.util.Set;
 public class Display extends JFrame {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private ArrayList<Game> games;
+     * Default serial UID
+     */
+    private static final long serialVersionUID = 1L;
+    
+    private ArrayList<Game> games;
     private ArrayList<Game> liveArray;
     private JPanel contentPane;
     private String input;
     private JPanel submitQuestionsPanel;
     private JPanel searchResultPanel;
-    private Font defaultFont = new Font("Helvetica", Font.PLAIN, 12);
+    private JPanel epicSearchResultPanel;
+    private JPanel gogSearchResultPanel;
+    private Font defaultFont = new Font("Helvetica", Font.BOLD, 12);
     private int sortByCode = 0;
+    private Color defaultColor = new Color(100, 149, 237);
+    private Color textColor = new Color(189, 187, 187);
 
     /**
      * Generates JFrame with all necessary components
@@ -52,11 +57,12 @@ public class Display extends JFrame {
         // Content pane setup
         setTitle("GameCheck");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 900, 500);
+        setBounds(100, 100, 1000, 550);
         //setResizable(false);
         contentPane = new JPanel();
         contentPane.setDoubleBuffered(true);
-        contentPane.setForeground(new Color(255, 182, 193));
+//        contentPane.setForeground(new Color(255, 182, 193));
+        contentPane.setForeground(defaultColor);
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
@@ -72,16 +78,18 @@ public class Display extends JFrame {
 
         // Setup and show panel for search query
         submitQuestionsPanel = new JPanel();
-        //submitQuestionsPanel.setPreferredSize(new Dimension(25, 25));
-        submitQuestionsPanel.setBackground(new Color(196, 165, 165));
+        submitQuestionsPanel.setBackground(new Color(73, 73, 255));
         
         JLabel searchQuestion = new JLabel("Search for a game by name: ");
         searchQuestion.setFont(new Font("Helvetica", Font.BOLD, 15));
+        searchQuestion.setForeground(textColor);
         //JLabel publisherSearchOption = new JLabel("Publisher?");
         JLabel genreSearchOption = new JLabel("Genre?");
         JLabel platformSearchOption = new JLabel("Platform?");
         platformSearchOption.setFont(defaultFont);
         genreSearchOption.setFont(defaultFont);
+        genreSearchOption.setForeground(textColor);
+        platformSearchOption.setForeground(textColor);       
         //publisherSearchOption.setFont(defaultFont);
         
         
@@ -121,7 +129,9 @@ public class Display extends JFrame {
         submitQuestionsPanel.add(submitQuestion);
         JLabel prompt = new JLabel("Or, filter games by these parameters:");
         prompt.setFont(new Font("Helvetica", Font.BOLD, 14));
+        prompt.setText("<html>"+ "Or, filter games by these parameters:" +"</html>");
         submitQuestionsPanel.add(prompt);
+        prompt.setForeground(textColor);
 //        submitQuestionsPanel.add(publisherSearchOption);
 //        submitQuestionsPanel.add(publisher);
         submitQuestionsPanel.add(genreSearchOption);
@@ -132,6 +142,7 @@ public class Display extends JFrame {
         submitQuestionsPanel.add(submitExParams);
         JLabel sortInfo = new JLabel("Sort the list:");
         sortInfo.setFont(new Font("Helvetica", Font.BOLD, 14));
+        sortInfo.setForeground(textColor);
         submitQuestionsPanel.add(sortInfo);
         submitQuestionsPanel.add(sortName);
         submitQuestionsPanel.add(sortRating);
@@ -145,6 +156,17 @@ public class Display extends JFrame {
         // Prepare search result panel
         searchResultPanel = new JPanel();
         contentPane.add(searchResultPanel, BorderLayout.AFTER_LAST_LINE);
+        searchResultPanel.setBackground(new Color(120, 121, 255)); 
+        
+        epicSearchResultPanel = new JPanel();
+        epicSearchResultPanel.setBackground(new Color(163, 163, 255));
+        contentPane.add(epicSearchResultPanel);
+        
+        gogSearchResultPanel = new JPanel();
+        gogSearchResultPanel.setBackground(new Color(191, 191, 255));
+        contentPane.add(gogSearchResultPanel);
+        
+        
         
 
 
@@ -159,39 +181,40 @@ public class Display extends JFrame {
         searchResultPanel.removeAll();
         searchResultPanel.revalidate();
         searchResultPanel.repaint();
-        
-//        boolean displayTable = true;
-        
-     
-//        DefaultTableModel model = new DefaultTableModel();
-//        JTable table = new JTable(model);
+        epicSearchResultPanel.removeAll();
+        epicSearchResultPanel.revalidate();
+        epicSearchResultPanel.repaint();
+        gogSearchResultPanel.removeAll();
+        gogSearchResultPanel.revalidate();
+        gogSearchResultPanel.repaint();
         
         // Set text based on result of search
-        JTextArea displayGame = new JTextArea(23, 35);
+        JTextArea displayGame = new JTextArea(23, 20);
+        JTextArea epicDisplayGame = new JTextArea(23, 20);
+        JTextArea gogDisplayGame = new JTextArea(23, 20);
         
         if (!input.isEmpty()) {
             // Search for game
             ArrayList<Game> selectedGames = GameCheckDriver.searchName(liveArray, input);
-            if (!selectedGames.isEmpty()) {
-                             
-//                table = new JTable(model);
-//                table.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
-//                
-//                model.addColumn("NAME");
-//                model.addColumn("RATING");
-//                model.addColumn("GENRES");              
+            
+            if (!selectedGames.isEmpty()) {    
                 
                 for (Game g : selectedGames) {
                     displayGame.append(g.toString() + "\n");
-//                    model.addRow(new Object[] {g.getName(), g.getRating() + "%", g.getStringGenres()});
+                    epicDisplayGame.append(g.toString() + "\n");
+                    gogDisplayGame.append(g.toString() + "\n");
                 }
+//                for (Game g : selectedGames) {
+//                    epicDisplayGame.append(g.toString() + "\n");
+//                }
+//                for (Game g : selectedGames) {
+//                    gogDisplayGame.append(g.toString() + "\n");
+//                }
             } else {
                 displayGame.setText("Your search couldn't be found.");
-                //displayTable = false;
             }
         } else {
             displayGame.setText("Please enter a search.");
-            //            displayTable = false;
         }
 
         displayGame.setFont(new Font("Helvetica", Font.PLAIN, 14));
@@ -199,23 +222,44 @@ public class Display extends JFrame {
         displayGame.setLineWrap(true);
         displayGame.setWrapStyleWord(true);
         displayGame.setCaretPosition(0);
-        searchResultPanel.add(new JScrollPane(displayGame, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.NORTH);
-
-        //        if (displayTable) {
-        //            table.setFillsViewportHeight(true);
-        //            table.setRowHeight(80);
-        //            searchResultPanel.add(new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.NORTH);
-        //        } else {
-        //            displayGame.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-        //            displayGame.setEditable(false);
-//            displayGame.setLineWrap(true);
-//            displayGame.setWrapStyleWord(true);
-//            displayGame.setCaretPosition(0);
-//            searchResultPanel.add(new JScrollPane(displayGame, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.NORTH);
-//        }
+        
+        epicDisplayGame.setFont(new Font("Helvetica", Font.PLAIN, 14));
+        epicDisplayGame.setEditable(false);
+        epicDisplayGame.setLineWrap(true);
+        epicDisplayGame.setWrapStyleWord(true);
+        epicDisplayGame.setCaretPosition(0);
+        
+        gogDisplayGame.setFont(new Font("Helvetica", Font.PLAIN, 14));
+        gogDisplayGame.setEditable(false);
+        gogDisplayGame.setLineWrap(true);
+        gogDisplayGame.setWrapStyleWord(true);
+        gogDisplayGame.setCaretPosition(0);
+        
+        JLabel steam = new JLabel("Steam");
+        steam.setForeground(Color.black);
+        steam.setFont(new Font("Helvetica", Font.BOLD, 16));
+        JLabel epic = new JLabel("Epic");
+        epic.setForeground(Color.black);
+        epic.setFont(new Font("Helvetica", Font.BOLD, 16));
+        JLabel gog = new JLabel("GOG");
+        gog.setForeground(Color.black);
+        gog.setFont(new Font("Helvetica", Font.BOLD, 16));
+        
+        
+        searchResultPanel.add(new JScrollPane(displayGame, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+        searchResultPanel.add(steam);
+        epicSearchResultPanel.add(new JScrollPane(epicDisplayGame, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+        epicSearchResultPanel.add(epic);
+        gogSearchResultPanel.add(new JScrollPane(gogDisplayGame, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+        gogSearchResultPanel.add(gog);
+        
     
         searchResultPanel.revalidate();
         searchResultPanel.repaint();
+        epicSearchResultPanel.revalidate();
+        epicSearchResultPanel.repaint();
+        gogSearchResultPanel.revalidate();
+        gogSearchResultPanel.repaint();
 
         System.out.println(input);            
     }
@@ -228,7 +272,7 @@ public class Display extends JFrame {
         searchResultPanel.revalidate();
         searchResultPanel.repaint();
         
-        JTextArea textArea = new JTextArea(23, 35);
+        JTextArea textArea = new JTextArea(23, 20);
         textArea.setFont(new Font("Helvetica", Font.PLAIN, 14));
         JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
         boolean entered = false;
@@ -306,7 +350,7 @@ public class Display extends JFrame {
         searchResultPanel.revalidate();
         searchResultPanel.repaint();
         
-        JTextArea textArea = new JTextArea(23, 35);
+        JTextArea textArea = new JTextArea(23, 20);
         textArea.setFont(new Font("Helvetica", Font.PLAIN, 14));
         JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         //ArrayList<Game> sorted;
@@ -337,3 +381,4 @@ public class Display extends JFrame {
     }
 
 }
+
