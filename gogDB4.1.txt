@@ -5277,4 +5277,4 @@ STAR WARS� Empire at War: Gold Pack	19.99	111	89	Casual, Profile Features Limi
 Port Royale 2	4.99	111	91	RPG, Cute, 2D
 The Settlers� 4: Gold Edition	9.99	111	76	Action, Pixel Graphics, Atmospheric
 	0	110	44	Pixel Graphics, Simulation, Strategy
-	Profile Features Limited, Atmospheric, Arcade
+	Profile Features Limited, Atmospheric, Arcad
