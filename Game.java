@@ -59,13 +59,13 @@ public class Game {
     }
     
    public String toString() {
-       String fullObj = name + "\nRating: " + rating + "\nPrice: " + price + "\n" + "Platforms:";
+       String fullObj = name + "\nRating: " + rating + "%\nPrice: $" + price + "\n" + "Platforms:";
        ArrayList<String> platformList = convertPlatforms(platforms);
        for (int i = 0; i < platformList.size() - 1; i++) {
            fullObj += " " + platformList.get(i) + ",";
        }
        fullObj +=  platformList.get(platformList.size() - 1) + "\nGenre Tags: " + genres + "\n";  
-       fullObj += "________________________________________________";
+       fullObj += "__________________________";
        return fullObj;
    }
     
