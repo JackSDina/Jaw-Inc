@@ -55,7 +55,7 @@ public class GameCheckDriver {
      * @throws FileNotFoundException
      */
     public static ArrayList<Game> fillData(String fileName) throws FileNotFoundException {
-        ArrayList<Game> gameData = new ArrayList();
+        ArrayList<Game> gameData = new ArrayList<Game>();
         File rawData = new File(fileName);
         Scanner fileReader = new Scanner(rawData);
         while (fileReader.hasNextLine()) {
@@ -63,9 +63,7 @@ public class GameCheckDriver {
             String[] separatedLine = new String[5];
             separatedLine = line.split("\t");
             separatedLine = line.split("\t");
-            if (separatedLine.length < 5) {
-                System.out.println(line);
-            } else {
+            if (separatedLine.length >= 5) {
                 Set<Integer> platforms = new HashSet<Integer>();
                 platforms = platformReader(separatedLine[2]);
                 int rating = Integer.parseInt(separatedLine[3]);
@@ -73,6 +71,7 @@ public class GameCheckDriver {
                 gameData.add(new Game(separatedLine[0], price, "", separatedLine[4], platforms, rating));
             }
         }
+        fileReader.close();
         return gameData;
     }
 
