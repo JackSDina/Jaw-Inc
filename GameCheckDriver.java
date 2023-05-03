@@ -13,12 +13,12 @@ public class GameCheckDriver {
 
     ArrayList<Game> gameArray = new ArrayList<Game>();
     public static void main(String[] args) throws FileNotFoundException {
-        ArrayList<Game> steamData = fillData("steam_search_beta4.txt");
-		ArrayList<Game> epicData = fillData("epicGamesDB2.txt");
-		ArrayList<Game> gogData = fillData("gogDB4.txt");
-		System.out.println(steamData.size());
-		System.out.println(gogData.size());
-		System.out.println(epicData.size());
+        ArrayList<Game> steamData = fillData("steam_search_beta4.1.txt");
+        ArrayList<Game> epicData = fillData("epicGamesDB2.1.txt");
+        ArrayList<Game> gogData = fillData("gogDB4.1.txt");
+//        System.out.println(steamData.size());
+//        System.out.println(gogData.size());
+//        System.out.println(gogData.size());
         //      System.out.println(gameData.size());
         //      System.out.println(gameData.get(0).getName() + " " + gameData.get(0).getRating());
         //      ArrayList<String> genreTest = convertGenres(gameData.get(0).getGenres());
@@ -30,7 +30,7 @@ public class GameCheckDriver {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    Display frame = new Display(steamData);
+                    Display frame = new Display(steamData, epicData, gogData);
                     frame.setLocationRelativeTo(null);
                     frame.setVisible(true);
                 } catch (Exception e) {
@@ -63,15 +63,15 @@ public class GameCheckDriver {
             String[] separatedLine = new String[5];
             separatedLine = line.split("\t");
             separatedLine = line.split("\t");
-			if (separatedLine.length < 5) {
-				System.out.println(line);
-			} else {
-				Set<Integer> platforms = new HashSet<Integer>();
-				platforms = platformReader(separatedLine[2]);
-				int rating = Integer.parseInt(separatedLine[3]);
-				float price = Float.parseFloat(separatedLine[1]);
-				gameData.add(new Game(separatedLine[0], price, "", separatedLine[4], platforms, rating));
-			}
+            if (separatedLine.length < 5) {
+                System.out.println(line);
+            } else {
+                Set<Integer> platforms = new HashSet<Integer>();
+                platforms = platformReader(separatedLine[2]);
+                int rating = Integer.parseInt(separatedLine[3]);
+                float price = Float.parseFloat(separatedLine[1]);
+                gameData.add(new Game(separatedLine[0], price, "", separatedLine[4], platforms, rating));
+            }
         }
         return gameData;
     }
@@ -249,13 +249,13 @@ public class GameCheckDriver {
         ArrayList<Game> newArray = new ArrayList<Game>();
         
         String newGenre = genre.toLowerCase();
-		
-		for (int i = 0; i < gameArray.size(); ++i) {
-			String gameGenres = gameArray.get(i).getGenres().toLowerCase();
-			if (gameGenres.contains(newGenre)) {
-				newArray.add(gameArray.get(i));
-			}
-		}
+        
+        for (int i = 0; i < g.size(); ++i) {
+            String gameGenres = g.get(i).getGenres().toLowerCase();
+            if (gameGenres.contains(newGenre)) {
+                newArray.add(g.get(i));
+            }
+        }
 //        for (int i = 0; i < g.size(); i++) {
 //            ArrayList<String> genres = GameCheckDriver.convertGenres(g.get(i).getGenres());
 //            List<String> lower = genres.stream().map(String::toLowerCase).collect(Collectors.toList());
