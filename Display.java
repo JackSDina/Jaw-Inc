@@ -53,7 +53,7 @@ public class Display extends JFrame {
      * 
      * @param The array of games
      */
-    public Display(ArrayList<Game> games, ArrayList<Game> epicGames, ArrayList<Game> gogGames) { // add additional params and set them
+    public Display(ArrayList<Game> games, ArrayList<Game> epicGames, ArrayList<Game> gogGames) {
         this.games = games;
         this.epicGames = epicGames;
         this.gogGames = gogGames;
