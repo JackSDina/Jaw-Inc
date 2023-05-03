@@ -65,21 +65,12 @@ public class Display extends JFrame {
         setTitle("GameCheck");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1050, 550);
-        //setResizable(false);
         contentPane = new JPanel();
         contentPane.setDoubleBuffered(true);
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
         setLayout(new GridLayout(1, 2, 0, 0));
-
-
-        // Print title
-        JLabel title = new JLabel("GameCheck");
-        title.setForeground(new Color(148, 19, 19));
-        title.setFont(new Font("Helvetica", Font.PLAIN, 24));
-        //contentPane.add(title, BorderLayout.NORTH);
-
 
         // Setup and show panel for search query
         submitQuestionsPanel = new JPanel();
@@ -88,18 +79,15 @@ public class Display extends JFrame {
         JLabel searchQuestion = new JLabel("Search for a game by name: ");
         searchQuestion.setFont(new Font("Helvetica", Font.BOLD, 15));
         searchQuestion.setForeground(textColor);
-        //JLabel publisherSearchOption = new JLabel("Publisher?");
         JLabel genreSearchOption = new JLabel("Genre?");
         JLabel platformSearchOption = new JLabel("Platform?");
         platformSearchOption.setFont(defaultFont);
         genreSearchOption.setFont(defaultFont);
         genreSearchOption.setForeground(textColor);
         platformSearchOption.setForeground(textColor);       
-        //publisherSearchOption.setFont(defaultFont);
         
         
         JTextField search = new JTextField(20);
-        //JTextField publisher = new JTextField(15);
         JTextField genre = new JTextField(15);
         JTextField platform = new JTextField(15);
         Font fieldFont = new Font("Helvetica", Font.PLAIN, 15);
@@ -138,8 +126,7 @@ public class Display extends JFrame {
         prompt.setText("<html>"+ "Or, filter games by these parameters:" +"</html>");
         submitQuestionsPanel.add(prompt);
         prompt.setForeground(textColor);
-//        submitQuestionsPanel.add(publisherSearchOption);
-//        submitQuestionsPanel.add(publisher);
+        
         submitQuestionsPanel.add(genreSearchOption);
         submitQuestionsPanel.add(genre);
         submitQuestionsPanel.add(platformSearchOption);
@@ -196,8 +183,8 @@ public class Display extends JFrame {
         if (!input.isEmpty()) {
             // Search for game
             ArrayList<Game> selectedGames = GameCheckDriver.searchName(liveArray, input);
-            ArrayList<Game> epicSelectedGames = GameCheckDriver.searchName(epicLiveArray, input); // change to epicLiveArray
-            ArrayList<Game> gogSelectedGames = GameCheckDriver.searchName(gogLiveArray, input); // change to gogLiveArray
+            ArrayList<Game> epicSelectedGames = GameCheckDriver.searchName(epicLiveArray, input); 
+            ArrayList<Game> gogSelectedGames = GameCheckDriver.searchName(gogLiveArray, input);
             
             
             if (!selectedGames.isEmpty()) {    
@@ -354,7 +341,6 @@ public class Display extends JFrame {
                 gogFinalList = GameCheckDriver.exclusiveTotalSearch(new ArrayList<Integer>(Arrays.asList(null, 2, 3)), inputArr, gogLiveArray);
             }
         }
-        //ArrayList<Game> sorted = GameCheckDriver.sortRating(finalList);
         
         if (entered && finalList.isEmpty()) {
             textArea.setText("No results found.");
