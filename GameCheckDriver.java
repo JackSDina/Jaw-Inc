@@ -18,7 +18,7 @@ public class GameCheckDriver {
 		ArrayList<Game> gogData = fillData("gogDB4.txt");
 		System.out.println(steamData.size());
 		System.out.println(gogData.size());
-		System.out.println(gogData.size());
+		System.out.println(epicData.size());
         //      System.out.println(gameData.size());
         //      System.out.println(gameData.get(0).getName() + " " + gameData.get(0).getRating());
         //      ArrayList<String> genreTest = convertGenres(gameData.get(0).getGenres());
