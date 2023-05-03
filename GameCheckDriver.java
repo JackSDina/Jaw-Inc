@@ -13,7 +13,12 @@ public class GameCheckDriver {
 
     ArrayList<Game> gameArray = new ArrayList<Game>();
     public static void main(String[] args) throws FileNotFoundException {
-        ArrayList<Game> gameData = fillData("steamdbTEST.txt");
+        ArrayList<Game> steamData = fillData("steam_search_beta4.txt");
+		ArrayList<Game> epicData = fillData("epicGamesDB2.txt");
+		ArrayList<Game> gogData = fillData("gogDB4.txt");
+		System.out.println(steamData.size());
+		System.out.println(gogData.size());
+		System.out.println(gogData.size());
         //      System.out.println(gameData.size());
         //      System.out.println(gameData.get(0).getName() + " " + gameData.get(0).getRating());
         //      ArrayList<String> genreTest = convertGenres(gameData.get(0).getGenres());
@@ -25,7 +30,7 @@ public class GameCheckDriver {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    Display frame = new Display(gameData);
+                    Display frame = new Display(steamData);
                     frame.setLocationRelativeTo(null);
                     frame.setVisible(true);
                 } catch (Exception e) {
@@ -57,12 +62,16 @@ public class GameCheckDriver {
             String line = fileReader.nextLine();
             String[] separatedLine = new String[5];
             separatedLine = line.split("\t");
-            String genres = separatedLine[4];
-            Set<Integer> platforms = new HashSet<Integer>();
-            platforms = platformReader(separatedLine[3]);
-            int rating = Integer.parseInt(separatedLine[1]);
-            float price = Float.parseFloat(separatedLine[2]);
-            gameData.add(new Game(separatedLine[0], price, "", separatedLine[4], platforms, rating));
+            separatedLine = line.split("\t");
+			if (separatedLine.length < 5) {
+				System.out.println(line);
+			} else {
+				Set<Integer> platforms = new HashSet<Integer>();
+				platforms = platformReader(separatedLine[2]);
+				int rating = Integer.parseInt(separatedLine[3]);
+				float price = Float.parseFloat(separatedLine[1]);
+				gameData.add(new Game(separatedLine[0], price, "", separatedLine[4], platforms, rating));
+			}
         }
         return gameData;
     }
