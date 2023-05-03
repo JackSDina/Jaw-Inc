@@ -31,7 +31,7 @@ public class Display extends JFrame {
      * Default serial UID
      */
     private static final long serialVersionUID = 1L;
-    
+
     private ArrayList<Game> games;
     private ArrayList<Game> epicGames;
     private ArrayList<Game> gogGames;
@@ -75,7 +75,7 @@ public class Display extends JFrame {
         // Setup and show panel for search query
         submitQuestionsPanel = new JPanel();
         submitQuestionsPanel.setBackground(new Color(73, 73, 255));
-        
+
         JLabel searchQuestion = new JLabel("Search for a game by name: ");
         searchQuestion.setFont(new Font("Helvetica", Font.BOLD, 15));
         searchQuestion.setForeground(textColor);
@@ -85,8 +85,8 @@ public class Display extends JFrame {
         genreSearchOption.setFont(defaultFont);
         genreSearchOption.setForeground(textColor);
         platformSearchOption.setForeground(textColor);       
-        
-        
+
+
         JTextField search = new JTextField(20);
         JTextField genre = new JTextField(15);
         JTextField platform = new JTextField(15);
@@ -104,7 +104,7 @@ public class Display extends JFrame {
         sortName.setFont(defaultFont);
         JButton sortPrice = new JButton("Sort by price");
         sortPrice.setFont(defaultFont);       
-        
+
         // Enables use of enter key to press submit button
         getRootPane().setDefaultButton(submitQuestion);
 
@@ -115,9 +115,9 @@ public class Display extends JFrame {
         sortRating.addActionListener(e -> sortBy(0));
         sortName.addActionListener(e -> sortBy(1));
         sortPrice.addActionListener(e -> sortBy(2));
-        
+
         submitQuestionsPanel.setLayout(new BoxLayout(submitQuestionsPanel, BoxLayout.PAGE_AXIS));
-        
+
         submitQuestionsPanel.add(searchQuestion);
         submitQuestionsPanel.add(search);
         submitQuestionsPanel.add(submitQuestion);
@@ -126,7 +126,7 @@ public class Display extends JFrame {
         prompt.setText("<html>"+ "Or, filter games by these parameters:" +"</html>");
         submitQuestionsPanel.add(prompt);
         prompt.setForeground(textColor);
-        
+
         submitQuestionsPanel.add(genreSearchOption);
         submitQuestionsPanel.add(genre);
         submitQuestionsPanel.add(platformSearchOption);
@@ -140,22 +140,22 @@ public class Display extends JFrame {
         submitQuestionsPanel.add(sortName);
         submitQuestionsPanel.add(sortRating);
         submitQuestionsPanel.add(sortPrice);
-        
+
         contentPane.add(submitQuestionsPanel, BorderLayout.NORTH);
-        
+
         // Prepare search result panel
         searchResultPanel = new JPanel();
         contentPane.add(searchResultPanel, BorderLayout.AFTER_LAST_LINE);
         searchResultPanel.setBackground(new Color(120, 121, 255)); 
-        
+
         epicSearchResultPanel = new JPanel();
         epicSearchResultPanel.setBackground(new Color(163, 163, 255));
         contentPane.add(epicSearchResultPanel);
-        
+
         gogSearchResultPanel = new JPanel();
         gogSearchResultPanel.setBackground(new Color(191, 191, 255));
         contentPane.add(gogSearchResultPanel);
-        
+
 
     }
 
@@ -174,19 +174,19 @@ public class Display extends JFrame {
         gogSearchResultPanel.removeAll();
         gogSearchResultPanel.revalidate();
         gogSearchResultPanel.repaint();
-        
+
         // Set text based on result of search
         JTextArea displayGame = new JTextArea(23, 20);
         JTextArea epicDisplayGame = new JTextArea(23, 20);
         JTextArea gogDisplayGame = new JTextArea(23, 20);
-        
+
         if (!input.isEmpty()) {
             // Search for game
             ArrayList<Game> selectedGames = GameCheckDriver.searchName(liveArray, input);
             ArrayList<Game> epicSelectedGames = GameCheckDriver.searchName(epicLiveArray, input); 
             ArrayList<Game> gogSelectedGames = GameCheckDriver.searchName(gogLiveArray, input);
-            
-            
+
+
             if (!selectedGames.isEmpty()) {    
                 for (Game g : selectedGames) {
                     displayGame.append(g.toString() + "\n");
@@ -202,7 +202,7 @@ public class Display extends JFrame {
             } else {
                 epicDisplayGame.setText("Your search couldn't be found.");
             }
-            
+
             if (!gogSelectedGames.isEmpty()) {
                 for (Game g : gogSelectedGames) {
                     gogDisplayGame.append(g.toString() + "\n");
@@ -210,7 +210,7 @@ public class Display extends JFrame {
             } else {
                 gogDisplayGame.setText("Your search couldn't be found.");
             }           
-            
+
         } else {
             displayGame.setText("Please enter a search query.");
         }
@@ -220,19 +220,19 @@ public class Display extends JFrame {
         displayGame.setLineWrap(true);
         displayGame.setWrapStyleWord(true);
         displayGame.setCaretPosition(0);
-        
+
         epicDisplayGame.setFont(new Font("Helvetica", Font.PLAIN, 14));
         epicDisplayGame.setEditable(false);
         epicDisplayGame.setLineWrap(true);
         epicDisplayGame.setWrapStyleWord(true);
         epicDisplayGame.setCaretPosition(0);
-        
+
         gogDisplayGame.setFont(new Font("Helvetica", Font.PLAIN, 14));
         gogDisplayGame.setEditable(false);
         gogDisplayGame.setLineWrap(true);
         gogDisplayGame.setWrapStyleWord(true);
         gogDisplayGame.setCaretPosition(0);
-        
+
         JLabel steam = new JLabel("Steam");
         steam.setForeground(Color.black);
         steam.setFont(new Font("Helvetica", Font.BOLD, 16));
@@ -242,26 +242,25 @@ public class Display extends JFrame {
         JLabel gog = new JLabel("GOG");
         gog.setForeground(Color.black);
         gog.setFont(new Font("Helvetica", Font.BOLD, 16));
-        
-        
+
+
         searchResultPanel.add(new JScrollPane(displayGame, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
         searchResultPanel.add(steam);
         epicSearchResultPanel.add(new JScrollPane(epicDisplayGame, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
         epicSearchResultPanel.add(epic);
         gogSearchResultPanel.add(new JScrollPane(gogDisplayGame, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
         gogSearchResultPanel.add(gog);
-        
-    
+
+
         searchResultPanel.revalidate();
         searchResultPanel.repaint();
         epicSearchResultPanel.revalidate();
         epicSearchResultPanel.repaint();
         gogSearchResultPanel.revalidate();
         gogSearchResultPanel.repaint();
-
-        System.out.println(input);            
+           
     }
-    
+
     /*
      * Generates and displays results of param search
      */
@@ -275,7 +274,7 @@ public class Display extends JFrame {
         gogSearchResultPanel.removeAll();
         gogSearchResultPanel.revalidate();
         gogSearchResultPanel.repaint();
-        
+
         JLabel steam = new JLabel("Steam");
         steam.setForeground(Color.black);
         steam.setFont(new Font("Helvetica", Font.BOLD, 16));
@@ -285,20 +284,20 @@ public class Display extends JFrame {
         JLabel gog = new JLabel("GOG");
         gog.setForeground(Color.black);
         gog.setFont(new Font("Helvetica", Font.BOLD, 16));
-        
+
         JTextArea textArea = new JTextArea(23, 20);
         textArea.setFont(new Font("Helvetica", Font.PLAIN, 14));
         JTextArea epicTextArea = new JTextArea(23, 20);
         epicTextArea.setFont(new Font("Helvetica", Font.PLAIN, 14));
         JTextArea gogTextArea = new JTextArea(23, 20);
         gogTextArea.setFont(new Font("Helvetica", Font.PLAIN, 14));         
-        
+
         boolean entered = false;
         Set<Game> finalList = new HashSet<Game>();
         Set<Game> epicFinalList = new HashSet<Game>();
         Set<Game> gogFinalList = new HashSet<Game>();
-        
-        
+
+
         if (searchCode == 0) {           
             ArrayList<Object> inputArr = new ArrayList<Object>(Arrays.asList(null, genre, platform));
             if (genre.isEmpty() && platform.isEmpty()) { // both empty
@@ -318,7 +317,7 @@ public class Display extends JFrame {
                 finalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(null, 2, 3)), inputArr, liveArray);
                 epicFinalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(null, 2, 3)), inputArr, epicLiveArray);
                 gogFinalList = GameCheckDriver.totalSearch(new ArrayList<Integer>(Arrays.asList(null, 2, 3)), inputArr, gogLiveArray);
-                
+
             }
         } else {
             ArrayList<Object> inputArr = new ArrayList<Object>(Arrays.asList(null, genre, platform));
@@ -341,32 +340,32 @@ public class Display extends JFrame {
                 gogFinalList = GameCheckDriver.exclusiveTotalSearch(new ArrayList<Integer>(Arrays.asList(null, 2, 3)), inputArr, gogLiveArray);
             }
         }
-        
+
         if (entered && finalList.isEmpty()) {
             textArea.setText("No results found.");
         } else if (entered) {
             ArrayList<Game> list = new ArrayList<Game>();
-          
-          list.addAll(finalList);
-          
-          if (sortByCode == 0) {
-              list = GameCheckDriver.sortRating(list);
-          } else if (sortByCode == 1) {
-              list = GameCheckDriver.sortName(list);
-          } else {
-              list = GameCheckDriver.sortPrice(list);
-          }
-          for (Game g : list) {
-              textArea.append(g.toString() + "\n");
-          }
+
+            list.addAll(finalList);
+
+            if (sortByCode == 0) {
+                list = GameCheckDriver.sortRating(list);
+            } else if (sortByCode == 1) {
+                list = GameCheckDriver.sortName(list);
+            } else {
+                list = GameCheckDriver.sortPrice(list);
+            }
+            for (Game g : list) {
+                textArea.append(g.toString() + "\n");
+            }
         }
-        
+
         if (entered && epicFinalList.isEmpty()) {  
             epicTextArea.setText("No results found.");
         } else if (entered) {
             ArrayList<Game> epicList = new ArrayList<Game>();
             epicList.addAll(epicFinalList);
-            
+
             if (sortByCode == 0) {
                 epicList = GameCheckDriver.sortRating(epicList);
             } else if (sortByCode == 1) {
@@ -374,18 +373,18 @@ public class Display extends JFrame {
             } else {
                 epicList = GameCheckDriver.sortPrice(epicList);
             }
-            
+
             for (Game g : epicList) {
                 epicTextArea.append(g.toString() + "\n");
             }
         }
-        
+
         if (entered && gogFinalList.isEmpty()) {
             gogTextArea.setText("No results found.");
         } else if (entered) {
             ArrayList<Game> gogList = new ArrayList<Game>();
             gogList.addAll(gogFinalList);
-            
+
             if (sortByCode == 0) {
                 gogList = GameCheckDriver.sortRating(gogList);
             } else if (sortByCode == 1) {
@@ -393,27 +392,27 @@ public class Display extends JFrame {
             } else {
                 gogList = GameCheckDriver.sortPrice(gogList);
             }
-            
+
             for (Game g : gogList) {
                 gogTextArea.append(g.toString() + "\n");
             }
         }
-        
+
         textArea.setEditable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setCaretPosition(0);
-        
+
         epicTextArea.setEditable(false);
         epicTextArea.setLineWrap(true);
         epicTextArea.setWrapStyleWord(true);
         epicTextArea.setCaretPosition(0);
-        
+
         gogTextArea.setEditable(false);
         gogTextArea.setLineWrap(true);
         gogTextArea.setWrapStyleWord(true);
         gogTextArea.setCaretPosition(0);   
-        
+
         searchResultPanel.add(new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
         searchResultPanel.add(steam);
         searchResultPanel.revalidate();
@@ -426,9 +425,9 @@ public class Display extends JFrame {
         gogSearchResultPanel.add(gog);
         gogSearchResultPanel.revalidate();
         gogSearchResultPanel.repaint();
-        
+
     }
-    
+
     /*
      * Sorts and displays games given a code to determine which parameter to sort by
      */
@@ -442,7 +441,7 @@ public class Display extends JFrame {
         gogSearchResultPanel.removeAll();
         gogSearchResultPanel.revalidate();
         gogSearchResultPanel.repaint();    
-        
+
         JLabel steam = new JLabel("Steam");
         steam.setForeground(Color.black);
         steam.setFont(new Font("Helvetica", Font.BOLD, 16));
@@ -452,11 +451,11 @@ public class Display extends JFrame {
         JLabel gog = new JLabel("GOG");
         gog.setForeground(Color.black);
         gog.setFont(new Font("Helvetica", Font.BOLD, 16));        
-        
+
         JTextArea textArea = new JTextArea(23, 20);
         JTextArea epicTextArea = new JTextArea(23, 20);
         JTextArea gogTextArea = new JTextArea(23, 20);
-        
+
         textArea.setFont(new Font("Helvetica", Font.PLAIN, 14));
         epicTextArea.setFont(new Font("Helvetica", Font.PLAIN, 14));
         gogTextArea.setFont(new Font("Helvetica", Font.PLAIN, 14));
@@ -476,7 +475,7 @@ public class Display extends JFrame {
             gogLiveArray = GameCheckDriver.sortPrice(gogGames);
             sortByCode = 2;
         }
-        
+
         for (int i = 0; i < liveArray.size(); i++) {
             textArea.append(i + 1 + ". " + liveArray.get(i).toString() +"\n");
         }
@@ -486,23 +485,23 @@ public class Display extends JFrame {
         for (int i = 0; i < gogLiveArray.size(); i++) {
             gogTextArea.append(i + 1 + ". " + gogLiveArray.get(i).toString() +"\n");
         }
-        
-        
+
+
         textArea.setEditable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setCaretPosition(0);
-        
+
         epicTextArea.setEditable(false);
         epicTextArea.setLineWrap(true);
         epicTextArea.setWrapStyleWord(true);
         epicTextArea.setCaretPosition(0);
-        
+
         gogTextArea.setEditable(false);
         gogTextArea.setLineWrap(true);
         gogTextArea.setWrapStyleWord(true);
         gogTextArea.setCaretPosition(0);               
-        
+
         searchResultPanel.add(new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
         searchResultPanel.add(steam);
         searchResultPanel.revalidate();
