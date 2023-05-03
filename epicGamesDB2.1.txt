@@ -4516,4 +4516,4 @@ STAR WARS Jedi: Survivor�	69.99	100	92	Free to Play, Exploration, First-Person
 STAR WARS Jedi: Survivor� - Deluxe Upgrade	20	100	59	2D, 3D, 3D
 Galactic Civilizations IV: Supernova	39.99	110	48	2D, Multiplayer, Cute
 Dying Light 2 Stay Human: Rahim Bundle	6.99	110	87	Story Rich, Colorful, Exploration
-	Early Access, Story Rich, Story Rich
+	Early Access, Story Rich, Story Ric
